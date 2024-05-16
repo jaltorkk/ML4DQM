@@ -14,7 +14,7 @@ def result():
     test_run_list = request.form['test_run_list']
 
     # Write the run list files
-    with open('runlist_2d_phieta.py', 'w') as f:
+    with open('static/runlist_2d_phieta.py', 'w') as f:
         f.write("trainingrunlist = " + str(training_run_list) + "\n")
         f.write("testrunlist = " + str(test_run_list) + "\n")
         f.write("test_MET_tail = False\n")

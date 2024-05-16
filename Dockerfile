@@ -11,6 +11,9 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 # Copy the rest of the applicationssd
 COPY . .
+RUN chgrp -R 0 /application/static && \
+    chmod -R g=u /application/static
+
 
 # Environment variables
 ENV PYTHONUNBUFFERED 1
