@@ -12,10 +12,6 @@ def index():
 def result():
     training_run_list = request.form['training_run_list']
     test_run_list = request.form['test_run_list']
-    
-    # Convert comma-separated strings to lists
-    training_run_list = training_run_list.split(',')
-    test_run_list = test_run_list.split(',')
 
     # Write the run list files
     with open('runlist_2d_phieta.py', 'w') as f:

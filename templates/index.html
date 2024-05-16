@@ -6,9 +6,9 @@
 <body>
     <h1>Enter Training and Testing Run Lists</h1>
     <form action="{{ url_for('result') }}" method="post" enctype="multipart/form-data">
-        <label for="training_run_list">Training Run List (comma-separated):</label>
+        <label for="training_run_list">Training Run List :</label>
         <input type="text" name="training_run_list" id="training_run_list" required><br>
-        <label for="test_run_list">Test Run List (comma-separated):</label>
+        <label for="test_run_list">Test Run List :</label>
         <input type="text" name="test_run_list" id="test_run_list" required><br>
         <input type="submit" value="Submit">
     </form>
