@@ -14,24 +14,18 @@ def result():
     test_run_list = request.form['test_run_list']
 
     # Write the run list files
-    #with open('runlist_2d_phieta.py', 'w') as f:
-    #    f.write("trainingrunlist = " + str(training_run_list) + "\n")
-    #    f.write("testrunlist = " + str(test_run_list) + "\n")
-     #   f.write("test_MET_tail = False\n")
-     #   f.write("test_2D_phivseta = True\n")
-    
-    try:
-        with open('static/runlist_2d_phieta.py', 'w') as f:
-            f.write("trainingrunlist = " + str(training_run_list) + "\n")
-            f.write("testrunlist = " + str(test_run_list) + "\n")
-            f.write("test_MET_tail = False\n")
-            f.write("test_2D_phivseta = True\n")
-    except Exception as e:
-        app.logger.error(f"Error writing run list files: {e}")
-        return "An error occurred while writing run list files.", 500
+    with open('runlist_2d_phieta.py', 'w') as f:
+        f.write("trainingrunlist = " + str(training_run_list) + "\n")
+        f.write("testrunlist = " + str(test_run_list) + "\n")
+        f.write("test_MET_tail = False\n")
+        f.write("test_2D_phivseta = True\n")
 
     # Execute the script
-    subprocess.run(["python", "ae_2d_phieta.py"], check=True)
+    #subprocess.run(["python", "ae_2d_phieta.py"], check=True)
+
+    result = subprocess.run(["python", "ae_2d_phieta.py"], capture_output=True, text=True)
+    print(result.stdout)  # Print script output
+    print(result.stderr)  # Print script error, if any
 
     # Collect results (assuming they are generated in the 'static' folder)
     images = os.listdir('static')
