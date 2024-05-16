@@ -21,7 +21,7 @@ def result():
         f.write("test_2D_phivseta = True\n")
 
     # Execute the script
-    subprocess.run(["python", "ae_2d_phieta.py"], check=True)
+    subprocess.run(["python3", "ae_2d_phieta.py"], check=True)
 
     # Collect results (assuming they are generated in the 'static' folder)
     images = os.listdir('static')
@@ -29,5 +29,5 @@ def result():
     return render_template('result.html', images=images)
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=8001)
+    app.run(debug=True, host='0.0.0.0', port=8001)
 
