@@ -21,7 +21,7 @@ def result():
         f.write("test_2D_phivseta = True\n")
 
     # Execute the script
-    subprocess.run(["python3", "ae_2d_phieta.py"], check=True)
+    subprocess.run(["python", "ae_2d_phieta.py"], check=True)
 
     # Collect results (assuming they are generated in the 'static' folder)
     images = os.listdir('static')
