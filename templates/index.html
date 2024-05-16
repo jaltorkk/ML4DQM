@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Data</title>
+    <title>ML Web App</title>
 </head>
 <body>
-    <h1>Enter Training and Testing Sets</h1>
-    <form action="/result" method="post">
-        <label for="training_data">Training Data:</label>
-        <input type="text" name="training_data" id="training_data"><br><br>
-        <label for="testing_data">Testing Data:</label>
-        <input type="text" name="testing_data" id="testing_data"><br><br>
+    <h1>Enter Training and Testing Run Lists</h1>
+    <form action="{{ url_for('result') }}" method="post" enctype="multipart/form-data">
+        <label for="training_run_list">Training Run List (comma-separated):</label>
+        <input type="text" name="training_run_list" id="training_run_list" required><br>
+        <label for="test_run_list">Test Run List (comma-separated):</label>
+        <input type="text" name="test_run_list" id="test_run_list" required><br>
         <input type="submit" value="Submit">
     </form>
 </body>
 </html>
+
