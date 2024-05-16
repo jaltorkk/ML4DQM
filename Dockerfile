@@ -7,6 +7,7 @@ WORKDIR /application
 
 # Copy python dependencies and install these
 COPY requirements.txt .
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 # Copy the rest of the applicationssd
 COPY . .
