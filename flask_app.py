@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import subprocess
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import run_locations
 from run_conditions import *
 
