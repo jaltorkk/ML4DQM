@@ -3,7 +3,7 @@ import os
 import subprocess
 #import matplotlib.pyplot as plt
 import run_locations
-from run_conditions import *
+#from run_conditions import *
 
 app = Flask(__name__)
 
