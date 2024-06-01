@@ -51,9 +51,8 @@ cycle_65 = "370790, 370776, 370775, 370774, 370772, 370753, 370749, 370725, 3707
 # --------------------------Training runs-------------------------- 
 def train_run_2023(train_runs_2023):
     valid_runs = []
-    runs = train_runs_2023.replace(',', ' ').split()
-    for run in runs:
-        run = run.strip()  # Remove any leading or trailing spaces
+    for run in train_runs_2023:
+        run = str(run).strip()  # Convert to string and remove any leading or trailing spaces
         if len(run) != 6 or not run.isdigit():
             return f"value {run} is out of range for type integer."
         elif run not in All_runs_2023:
@@ -66,44 +65,11 @@ def train_run_2023(train_runs_2023):
         print("Warning: It is recommended to train with at least 20 runs.")
     return valid_runs
 
-def get_runs_between_train(run_1, run_2):
-    # Assuming All_runs_2023 and good_runs_2023 are global variables
-    global All_runs_2023, good_runs_2023
-    # Validate run_1
-    if len(run_1) != 6 or not run_1.isdigit() or run_1 not in All_runs_2023:
-        return f"Error: {run_1} is out of range for type integer or does not exist for JetMET PD."
-    # Validate run_2
-    if len(run_2) != 6 or not run_2.isdigit() or run_2 not in All_runs_2023:
-        return f"Error: {run_2} is out of range for type integer or does not exist for JetMET PD."
-    # Find the indices of run_1 and run_2 in the list
-    try:
-        index_1 = All_runs_2023.index(run_1)
-        index_2 = All_runs_2023.index(run_2)
-    except ValueError:
-        return "Invalid run values"
-    # Ensure run_1 comes before run_2
-    if index_1 > index_2:
-        index_1, index_2 = index_2, index_1
-    # Extract the sublist between the indices
-    runs_between = All_runs_2023[index_1:index_2 + 1]
-    good_runs_between = [run for run in runs_between if run in good_runs_2023]
-    
-    for run in runs_between:
-        if run not in good_runs_2023:
-            print(f"Warning: This run {run} is not a good run. Skipping it.")
-
-    # Check the number of good runs
-    if len(good_runs_between) < 20:
-        print("Warning: It is recommended to train with at least 20 good runs.")
-
-    return good_runs_between
-
 # -----------------------Test runs--------------------------
 def test_run_2023(test_runs_2023):
     valid_runs = []
-    runs = test_runs_2023.replace(',', ' ').split()
-    for run in runs:
-        run = run.strip()  # Remove any leading or trailing spaces
+    for run in test_runs_2023:
+        run = str(run).strip()  # Convert to string and remove any leading or trailing spaces
         if len(run) != 6 or not run.isdigit():
             return f"value {run} is out of range for type integer."
         elif run not in All_runs_2023:
@@ -111,25 +77,3 @@ def test_run_2023(test_runs_2023):
         else:
             valid_runs.append(run)
     return valid_runs
-
-def get_runs_between_test(run_1, run_2):
-    # Assuming All_runs_2023 and good_runs_2023 are global variables
-    global All_runs_2023, good_runs_2023
-    # Validate run_1
-    if len(run_1) != 6 or not run_1.isdigit() or run_1 not in All_runs_2023:
-        return f"Error: {run_1} is out of range for type integer or does not exist for JetMET PD."
-    # Validate run_2
-    if len(run_2) != 6 or not run_2.isdigit() or run_2 not in All_runs_2023:
-        return f"Error: {run_2} is out of range for type integer or does not exist for JetMET PD."
-    # Find the indices of run_1 and run_2 in the list
-    try:
-        index_1 = All_runs_2023.index(run_1)
-        index_2 = All_runs_2023.index(run_2)
-    except ValueError:
-        return "Invalid run values"
-    # Ensure run_1 comes before run_2
-    if index_1 > index_2:
-        index_1, index_2 = index_2, index_1
-    # Extract the sublist between the indices
-    runs_between = All_runs_2023[index_1:index_2 + 1]
-    return runs_between
