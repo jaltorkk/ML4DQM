@@ -51,6 +51,7 @@ cycle_65 = "370790, 370776, 370775, 370774, 370772, 370753, 370749, 370725, 3707
 # --------------------------Training runs-------------------------- 
 def train_run_2023(train_runs_2023):
     valid_runs = []
+    warnings = []
     for run in train_runs_2023:
         run = str(run).strip()  # Convert to string and remove any leading or trailing spaces
         if len(run) != 6 or not run.isdigit():
@@ -58,16 +59,17 @@ def train_run_2023(train_runs_2023):
         elif run not in All_runs_2023:
             return f"Error: This run {run} does not exist for JetMET PD."
         elif run not in good_runs_2023:
-            print(f"Warning: This run {run} is not a good run. Skipping it.")
+            warnings.append(f"Warning: This run {run} is not a good run. Skipping it.")
             continue
         valid_runs.append(run)
     if len(valid_runs) < 20:
-        print("Warning: It is recommended to train with at least 20 runs.")
-    return valid_runs
+        warnings.append("Warning: It is recommended to train with at least 20 runs.")
+    return valid_runs, warnings
 
 # -----------------------Test runs--------------------------
 def test_run_2023(test_runs_2023):
     valid_runs = []
+    warnings = []
     for run in test_runs_2023:
         run = str(run).strip()  # Convert to string and remove any leading or trailing spaces
         if len(run) != 6 or not run.isdigit():
@@ -76,5 +78,5 @@ def test_run_2023(test_runs_2023):
             return f"Error: This run {run} does not exist for JetMET PD."
         else:
             valid_runs.append(run)
-    return valid_runs
+    return valid_runs, warnings
   
