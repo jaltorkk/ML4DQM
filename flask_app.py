@@ -21,7 +21,7 @@ def result():
         ["python3", "run_locations.py", training_run_list_str, test_run_list_str],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        text=True
+        universal_newlines=True
     )
 
     print(result.stdout)  # Print script output
