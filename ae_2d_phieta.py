@@ -33,33 +33,15 @@ test_lists=[]
 norm_list_phieta_test=[]
 test_runs=[]
 
-def process_runs(training_run_list, test_run_list):
+def process_runs(training_run_list_str):
+    # Convert the string of runs entered in the web app to a list
+    training_run_list = training_run_list_str.split(',')
+    # Remove any leading or trailing spaces from each run
+    training_run_list = [run.strip() for run in training_run_list]
+    # Add double quotes around each run
+    training_run_list = ['"' + run + '"' for run in training_run_list]
     training_runs = []
-    test_runs = []
-    # Loop through each entered run
-    for run_number in training_run_list + test_run_list:
-        # Use the run number to get the file location
-        filelocation_22 = run_locations.get_file_path(run_number)
-        filelocation_2 = filelocation_22[0]
-        # Check if the run is in the training or test list
-        if run_number in training_run_list:
-            runs = training_runs
-        else:
-            runs = test_runs
-        # Append the run number to the appropriate list
-        runs.append(run_number)
-        # Continue with the rest of your processing
-        
-    # Process the rest of the runs and return results
-    # (Note: You'll need to adjust the processing code accordingly)
-    return {
-        'training_runs': training_runs,
-        'test_runs': test_runs,
-        # Add other results as needed
-    }
-
-
-with open(run_locations.list_location,"r") as file:
+    with open(run_locations.list_location,"r") as file:
     # reading each line
     for line in file:
         # reading each word
@@ -67,7 +49,7 @@ with open(run_locations.list_location,"r") as file:
             run_number = word[14:20]
             filelocation_22 = run_locations.get_file_path(run_number)
             filelocation_2 = filelocation_22[0]
-            train_runs=python.trainingrunlist
+            train_runs= training_run_list
             run_num2 = word[14:20]
             if run_num2 in train_runs:
                 file = TFile.Open(filelocation_2, "READ")
@@ -91,6 +73,10 @@ with open(run_locations.list_location,"r") as file:
                 training_lists.append(lists_phieta_train)
                 b_phieta_norm=max_bin_cont/phi_eta_entr
                 norm_list_phieta_train.append(b_phieta_norm)
+    return training_runs
+
+
+
 
             #test runs
             testing_runs=python.testrunlist
