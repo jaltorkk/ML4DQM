@@ -19,14 +19,17 @@ def result():
     test_run_list = [int(run.strip()) for run in test_run_list.split(',')]
 
     # Validate run lists
-    valid_training_runs = train_run_2023(training_run_list)
-    valid_test_runs = test_run_2023(test_run_list)
+    valid_training_runs, training_warnings = train_run_2023(training_run_list)
+    valid_test_runs, test_warnings = test_run_2023(test_run_list)
 
     # Handle errors or warnings in validation
     if isinstance(valid_training_runs, str):
         return f"Error in training run list: {valid_training_runs}"
     if isinstance(valid_test_runs, str):
         return f"Error in test run list: {valid_test_runs}"
+
+    # Combine warnings
+    all_warnings = training_warnings + test_warnings
 
     # Now you can use these valid runs in your subprocess call
     training_run_list_str = str(valid_training_runs)
@@ -46,7 +49,7 @@ def result():
     # Collect results (assuming they are generated in the 'static' folder)
     images = os.listdir('static')
 
-    return render_template('result.html', images=images)
+    return render_template('result.html', images=images, warnings=all_warnings)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
