@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
-import os
 import subprocess
+from run_conditions import train_run_2023, test_run_2023
 
 app = Flask(__name__)
 
@@ -13,10 +13,25 @@ def result():
     training_run_list = request.form['training_run_list']
     test_run_list = request.form['test_run_list']
 
-    # Execute the run_locations.py script with the provided run lists
-    training_run_list_str = training_run_list.replace(" ", "")
-    test_run_list_str = test_run_list.replace(" ", "")
+    # Convert run lists to lists of integers
+    training_run_list = [int(run.strip()) for run in training_run_list.split(',')]
+    test_run_list = [int(run.strip()) for run in test_run_list.split(',')]
 
+    # Validate run lists
+    valid_training_runs = train_run_2023(training_run_list)
+    valid_test_runs = test_run_2023(test_run_list)
+
+    # Handle errors or warnings in validation
+    if isinstance(valid_training_runs, str):
+        return f"Error in training run list: {valid_training_runs}"
+    if isinstance(valid_test_runs, str):
+        return f"Error in test run list: {valid_test_runs}"
+
+    # Now you can use these valid runs in your subprocess call
+    training_run_list_str = str(valid_training_runs)
+    test_run_list_str = str(valid_test_runs)
+
+    # Execute the run_locations.py script with the provided run lists
     result = subprocess.run(
         ["python3", "run_locations.py", training_run_list_str, test_run_list_str],
         stdout=subprocess.PIPE,
