@@ -16,14 +16,12 @@ def result():
     # Execute the run_locations.py script with the provided run lists
     training_run_list_str = training_run_list.replace(" ", "")
     test_run_list_str = test_run_list.replace(" ", "")
-
+    
     result = subprocess.run(
         ["python3", "run_locations.py", training_run_list_str, test_run_list_str],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
+        capture_output=True, text=True
     )
-
+    
     print(result.stdout)  # Print script output
     print(result.stderr)  # Print script error, if any
 
@@ -34,6 +32,7 @@ def result():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
+
 
 
 
