@@ -1,6 +1,15 @@
 import os
 import sys
-from runlist_2d_phieta import*
+import ast
+
+# Define a function to parse command-line arguments
+def parse_arguments():
+    if len(sys.argv) != 3:
+        print("Usage: python run_locations.py <trainingrunlist> <testrunlist>")
+        sys.exit(1)
+    trainingrunlist = ast.literal_eval(sys.argv[1])
+    testrunlist = ast.literal_eval(sys.argv[2])
+    return trainingrunlist, testrunlist
 
 # Run-3 2023 file path
 def get_file_path(run_number):
@@ -32,22 +41,33 @@ def get_file_path(run_number):
     print(f"This run {run_number} does not exist for JetMET PD.")
     return None
 
-# Filelocation  
-filelocation  = " "
-list_location = " "
-if len(trainingrunlist)==0:
-    filelocation = "/eos/user/i/iatakisi/Depo/DQM_DC/2018PromptReco/"
-    os.system("ls /eos/user/i/iatakisi/Depo/DQM_DC/2018PromptReco/ |grep DQM_ >list_2018.txt")
-    list_location="/eos/user/j/jaltork/SWAN_projects/ML4DQM_2d_phivseta/runlist_2018.txt"
-else:
-    for run_number in trainingrunlist + testrunlist:
-        file_paths = get_file_path(run_number)
-        if file_paths:
-            filelocation = file_paths[0][:file_paths[0].rfind('/')+1]  
-            list_loc = os.path.basename(file_paths[0])  
-            with open("runlist_2023.txt", 'a') as file:
-                file.write(f'{list_loc}\n')
-            list_location="/eos/user/j/jaltork/SWAN_projects/ML4DQM_2d_phivseta/runlist_2023.txt"
+def main():
+    # Parse command-line arguments
+    trainingrunlist, testrunlist = parse_arguments()
+
+    # File location
+    filelocation = " "
+    list_location = " "
+    if len(trainingrunlist) == 0:
+        filelocation = "/eos/user/i/iatakisi/Depo/DQM_DC/2018PromptReco/"
+        list_location = "runlist_2018.txt"
+        with open(list_location, 'w') as file:
+            files = os.listdir(filelocation)
+            for f in files:
+                if "DQM_" in f:
+                    file.write(f"{f}\n")
+    else:
+        for run_number in trainingrunlist + testrunlist:
+            file_paths = get_file_path(run_number)
+            if file_paths:
+                filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
+                list_loc = os.path.basename(file_paths[0])
+                with open("runlist_2023.txt", 'a') as file:
+                    file.write(f'{list_loc}\n')
+                list_location = "runlist_2023.txt"
+                
+if __name__ == "__main__":
+    main()
 
 
 # Default Example: Prompt-Reco 2018 Runs Era A (Train) and Era D (Test).
