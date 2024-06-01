@@ -20,7 +20,6 @@ from ROOT import gROOT, gBenchmark, gRandom, gSystem, gStyle
 import tensorflow as tf
 from sklearn.neural_network import MLPRegressor
 import run_locations
-from runlist_2d_phieta import*
 
 # do cleaning for images
 #os.system("rm *.txt images_phieta/*.png images_phieta/*.img images_phieta/*.jpg")
@@ -34,22 +33,41 @@ test_lists=[]
 norm_list_phieta_test=[]
 test_runs=[]
 
-if ( not test_2D_phivseta ):
-    sys.exit() 
+def process_runs(training_run_list, test_run_list):
+    training_runs = []
+    test_runs = []
+    # Loop through each entered run
+    for run_number in training_run_list + test_run_list:
+        # Use the run number to get the file location
+        filelocation_22 = run_locations.get_file_path(run_number)
+        filelocation_2 = filelocation_22[0]
+        # Check if the run is in the training or test list
+        if run_number in training_run_list:
+            runs = training_runs
+        else:
+            runs = test_runs
+        # Append the run number to the appropriate list
+        runs.append(run_number)
+        # Continue with the rest of your processing
+        
+    # Process the rest of the runs and return results
+    # (Note: You'll need to adjust the processing code accordingly)
+    return {
+        'training_runs': training_runs,
+        'test_runs': test_runs,
+        # Add other results as needed
+    }
+
 
 with open(run_locations.list_location,"r") as file:
     # reading each line
     for line in file:
         # reading each word
         for word in line.split():
-            if len(trainingrunlist)==0:
-                filelocation_2=run_locations.filelocation+word
-                train_runs=run_locations.training_runs_2d_2018
-            else:   
-                run_number = word[14:20]
-                filelocation_22 = run_locations.get_file_path(run_number)
-                filelocation_2 = filelocation_22[0]
-                train_runs=trainingrunlist
+            run_number = word[14:20]
+            filelocation_22 = run_locations.get_file_path(run_number)
+            filelocation_2 = filelocation_22[0]
+            train_runs=python.trainingrunlist
             run_num2 = word[14:20]
             if run_num2 in train_runs:
                 file = TFile.Open(filelocation_2, "READ")
@@ -75,10 +93,7 @@ with open(run_locations.list_location,"r") as file:
                 norm_list_phieta_train.append(b_phieta_norm)
 
             #test runs
-            if len(trainingrunlist)==0:
-                testing_runs=run_locations.test_runs_2d_2018
-            else:
-                testing_runs=testrunlist
+            testing_runs=python.testrunlist
             run_num2 = word[14:20]
             if run_num2 in testing_runs:
                 file = TFile.Open(filelocation_2, "READ")
