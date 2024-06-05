@@ -25,22 +25,23 @@ import run_locations
 #os.system("rm *.txt images_phieta/*.png images_phieta/*.img images_phieta/*.jpg")
 #os.system("rm *images_phieta/*.png images_phieta/*.img images_phieta/*.jpg")
 
-# Lists contain PhiVSEta bins for each run 
-training_lists=[]
-norm_list_phieta_train=[]
-training_runs=[]
-test_lists=[]
-norm_list_phieta_test=[]
-test_runs=[]
-
-def process_runs(training_run_list_str):
+def process_runs(training_run_list_str,test_run_list_str):
     # Convert the string of runs entered in the web app to a list
     training_run_list = training_run_list_str.split(',')
+    test_run_list = test_run_list_str.split(',')
     # Remove any leading or trailing spaces from each run
     training_run_list = [run.strip() for run in training_run_list]
+    test_run_list = [run.strip() for run in test_run_list]
     # Add double quotes around each run
     training_run_list = ['"' + run + '"' for run in training_run_list]
-    training_runs = []
+    test_run_list = ['"' + run + '"' for run in test_run_list]
+    # Lists contain PhiVSEta bins for each run 
+    training_runs=[]
+    test_runs=[]
+    training_lists=[]
+    test_lists=[]
+    norm_list_phieta_train=[]
+    norm_list_phieta_test=[]
     with open(run_locations.list_location,"r") as file:
     # reading each line
     for line in file:
@@ -49,9 +50,8 @@ def process_runs(training_run_list_str):
             run_number = word[14:20]
             filelocation_22 = run_locations.get_file_path(run_number)
             filelocation_2 = filelocation_22[0]
-            train_runs= training_run_list
             run_num2 = word[14:20]
-            if run_num2 in train_runs:
+            if run_num2 in training_run_list:
                 file = TFile.Open(filelocation_2, "READ")
                 run_num = word[14:20]
                 training_runs.append(run_num)
@@ -73,15 +73,7 @@ def process_runs(training_run_list_str):
                 training_lists.append(lists_phieta_train)
                 b_phieta_norm=max_bin_cont/phi_eta_entr
                 norm_list_phieta_train.append(b_phieta_norm)
-    return training_runs
-
-
-
-
-            #test runs
-            testing_runs=python.testrunlist
-            run_num2 = word[14:20]
-            if run_num2 in testing_runs:
+            if run_num2 in test_run_list:
                 file = TFile.Open(filelocation_2, "READ")
                 run_num = word[14:20]
                 test_runs.append(run_num)
@@ -103,8 +95,7 @@ def process_runs(training_run_list_str):
                 test_lists.append(lists_phieta_test)
                 b_phieta_norm=max_bin_cont/phi_eta_entr
                 norm_list_phieta_test.append(b_phieta_norm)
-                
-    file.Close()
+    return training_runs,test_runs,training_lists,test_lists,norm_list_phieta_train,norm_list_phieta_test
 
 # Normalize training and test runs
 max_train=max(norm_list_phieta_train)
