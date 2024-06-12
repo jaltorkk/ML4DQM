@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import os
 import numpy as np
-from process_runs import process_runs  # Import the process_runs function
+from ae_2d_phieta import process_runs  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
 
 app = Flask(__name__)
