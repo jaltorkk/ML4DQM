@@ -14,6 +14,9 @@ COPY . .
 RUN chgrp -R 0 /application/static && \
     chmod -R g=u /application/static
 
+# Install system-level dependencies for ROOT
+RUN apt-get update && apt-get install -y \
+    root-system-bin
 
 # Environment variables
 ENV PYTHONUNBUFFERED 1
