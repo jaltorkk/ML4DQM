@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: my-flask-app
-        image: registry.cern.ch/<your-username>/<your-image-name>:<tag>
+        image: registry.cern.ch/jaltork/myflaskapp:v1.0
         ports:
-        - containerPort: 8000
+        - containerPort: 8001
