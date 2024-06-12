@@ -79,16 +79,16 @@ def process_runs(training_run_list_str, test_run_list_str):
 
     return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
 
-if __name__ == "__main__":
-    import sys
-    training_run_list_str = sys.argv[1]
-    test_run_list_str = sys.argv[2]
-    training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = process_runs(training_run_list_str, test_run_list_str)
+#if __name__ == "__main__":
+#    import sys
+#    training_run_list_str = sys.argv[1]
+#    test_run_list_str = sys.argv[2]
+#    training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = process_runs(training_run_list_str, test_run_list_str)
 
-    max_train = max(norm_list_phieta_train) if norm_list_phieta_train else 1
-    max_test = max(norm_list_phieta_test) if norm_list_phieta_test else 1
+    #max_train = max(norm_list_phieta_train) if norm_list_phieta_train else 1
+    #max_test = max(norm_list_phieta_test) if norm_list_phieta_test else 1
 
-    training_list = np.array(training_lists)
-    test_list = np.array(test_lists)
-    training_list = training_list / max_train
+    #training_list = np.array(training_lists)
+    #test_list = np.array(test_lists)
+    #training_list = training_list / max_train
 
