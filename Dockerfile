@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
 # Download and install ROOT
 RUN wget https://root.cern/download/root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
     tar -xzf root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
-    mv root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3 /application/root && \
+    ls -d */ && \
+    mv root*/ /application/root && \
     rm root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 
 
