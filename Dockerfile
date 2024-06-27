@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y \
 RUN wget https://root.cern/download/root_v6.24.06.source.tar.gz && \
     tar -xzf root_v6.24.06.source.tar.gz && \
     mkdir root_build && cd root_build && \
-    cmake ../root-6.24.06 -DPYTHON_EXECUTABLE=/usr/bin/python3.6 -Dminimal=ON -Dpython=ON -Dpyroot=ON -Dxrootd=OFF -Dcastor=OFF -Dchirp=OFF -Ddcache=OFF -Dgfal=OFF -Drfio=OFF && \
+    cmake ../root-6.24.06 -DPYTHON3_EXECUTABLE=/usr/bin/python3.6 -Dpython3=ON && \
     make -j$(nproc) && \
     make install && \
     rm -rf /root_build root_v6.24.06.source.tar.gz
