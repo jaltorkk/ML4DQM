@@ -40,17 +40,17 @@ RUN apt-get update && apt-get install -y \
     xlibmesa-glu-dev \
     libglew-dev \
     libftgl-dev \
-    libmysqlclient-dev \
+    default-libmysqlclient-dev \
     libfftw3-dev \
     libcfitsio-dev \
-    graphviz-dev \
+    graphviz \
     libavahi-compat-libdnssd-dev \
     libldap2-dev \
     python-dev \
     libxml2-dev \
     libkrb5-dev \
     libgsl0-dev \
-    libqt4-dev \
+    qtbase5-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Download and build ROOT from source
@@ -61,7 +61,6 @@ RUN wget https://root.cern/download/root_v6.24.06.source.tar.gz && \
     make -j$(nproc) && \
     make install && \
     rm -rf /root_build root_v6.24.06.source.tar.gz
-
 
 # Set environment variables for ROOT
 ENV ROOTSYS /application/root
