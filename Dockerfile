@@ -6,20 +6,38 @@ RUN mkdir /application
 WORKDIR /application
 
 # Install necessary packages for ROOT
+#RUN apt-get update && apt-get install -y \
+#    wget \
+#    curl \
+#    git \
+#    && rm -rf /var/lib/apt/lists/*
+    
+# Download and install ROOT
+#RUN wget https://root.cern/download/root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
+#    mkdir /temp_root && \
+#    tar -xzf root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz -C /temp_root && \
+#    mv /temp_root/* /application/root && \
+#    rm -rf /temp_root && \
+#    rm root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
+
+# Install necessary packages for building ROOT
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
     git \
+    build-essential \
+    cmake \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
-    
-# Download and install ROOT
-RUN wget https://root.cern/download/root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
-    mkdir /temp_root && \
-    tar -xzf root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz -C /temp_root && \
-    mv /temp_root/* /application/root && \
-    rm -rf /temp_root && \
-    rm root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 
+# Download and build ROOT from source
+RUN wget https://root.cern/download/root_v6.24.06.source.tar.gz && \
+    tar -xzf root_v6.24.06.source.tar.gz && \
+    mkdir root_build && cd root_build && \
+    cmake ../root-6.24.06 -DPYTHON_EXECUTABLE=/usr/bin/python3.6 && \
+    make -j$(nproc) && \
+    make install && \
+    rm -rf /root_build root_v6.24.06.source.tar.gz
 
 
 # Set environment variables for ROOT
