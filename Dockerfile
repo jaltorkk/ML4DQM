@@ -14,10 +14,12 @@ RUN apt-get update && apt-get install -y \
     
 # Download and install ROOT
 RUN wget https://root.cern/download/root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
-    tar -xzf root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
-    extracted_dir=$(tar -tf root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz | head -1 | cut -f1 -d"/") && \
-    mv $extracted_dir /application/root && \
+    mkdir /temp_root && \
+    tar -xzf root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz -C /temp_root && \
+    mv /temp_root/* /application/root && \
+    rm -rf /temp_root && \
     rm root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
+
 
 
 # Set environment variables for ROOT
