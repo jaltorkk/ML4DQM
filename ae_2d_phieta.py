@@ -19,12 +19,12 @@ def process_runs(training_run_list_str, test_run_list_str):
     return training_run_list, test_run_list
 
     # Lists contain PhiVSEta bins for each run 
-#    training_runs = []
-#    test_runs = []
-#    training_lists = []
-#    test_lists = []
-#    norm_list_phieta_train = []
-#    norm_list_phieta_test = []
+    training_runs = []
+    test_runs = []
+    training_lists = []
+    test_lists = []
+    norm_list_phieta_train = []
+    norm_list_phieta_test = []
 
 #    with open(run_locations.list_location, "r") as file:
 #        for line in file:
