@@ -5,7 +5,7 @@ FROM python:3.6-slim
 RUN mkdir /application
 WORKDIR /application
 
-sudo yum install git make cmake gcc-c++ gcc binutils \
+yum install git make cmake gcc-c++ gcc binutils \
 libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel \
 xrootd-client-devel xrootd-libs-devel
 
