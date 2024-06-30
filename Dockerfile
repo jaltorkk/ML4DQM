@@ -5,6 +5,9 @@ FROM python:3.6-slim
 RUN mkdir /application
 WORKDIR /application
 
+dnf install root
+dnf install root python3-root root-notebook
+
 # Install necessary packages for ROOT
 #RUN apt-get update && apt-get install -y \
 #    wget \
