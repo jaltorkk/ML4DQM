@@ -47,7 +47,7 @@ run_locations = RunLocations()
 #                    if (k % 52 != 0) and (j % 52 != 0):
 #                        bin_cont_phieta = phi_eta.GetBinContent(i)
 #                        if bin_cont_phieta > max_bin_cont:
-3                            max_bin_cont = bin_cont_phieta
+#                            max_bin_cont = bin_cont_phieta
 #                        b_phieta = bin_cont_phieta / phi_eta_entr
 #                        lists_phieta_train.append(b_phieta)
                 
