@@ -16,6 +16,7 @@ def process_runs(training_run_list_str, test_run_list_str):
     # Remove any leading or trailing spaces from each run
     training_run_list = [run.strip() for run in training_run_list]
     test_run_list = [run.strip() for run in test_run_list]
+    return training_run_list, test_run_list
 
     # Lists contain PhiVSEta bins for each run 
 #    training_runs = []
