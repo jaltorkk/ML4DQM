@@ -5,7 +5,7 @@ FROM python:3.6-slim
 RUN mkdir /application
 WORKDIR /application
 
-RUN apt-get install binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev \
+RUN apt-get update && apt-get install -y \ binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev \
     libxext-dev libxft-dev libxpm-dev python3 libtbb-dev
 #RUN git make cmake gcc-c++ gcc binutils \
 #    libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel \
