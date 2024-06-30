@@ -31,7 +31,7 @@ WORKDIR /application
 #    rm root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 
 # Install necessary packages for building ROOT
-RUN apt-get update && apt-get install -y \
+#RUN apt-get update && apt-get install -y \
 #    wget \
 #    curl \
 #    git \
