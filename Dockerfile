@@ -21,46 +21,46 @@ WORKDIR /application
 #    rm root_v6.24.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 
 # Install necessary packages for building ROOT
-RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
-    git \
-    build-essential \
-    cmake \
-    python3-dev \
-    g++ \
-    gcc \
-    binutils \
-    libx11-dev \
-    libxpm-dev \
-    libxft-dev \
-    libxext-dev \
-    libssl-dev \
-    libpcre3-dev \
-    xlibmesa-glu-dev \
-    libglew-dev \
-    libftgl-dev \
-    default-libmysqlclient-dev \
-    libfftw3-dev \
-    libcfitsio-dev \
-    graphviz \
-    libavahi-compat-libdnssd-dev \
-    libldap2-dev \
-    python-dev \
-    libxml2-dev \
-    libkrb5-dev \
-    libgsl0-dev \
-    qtbase5-dev \
-    && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y \
+#    wget \
+#    curl \
+#    git \
+#    build-essential \
+#    cmake \
+#    python3-dev \
+#    g++ \
+#    gcc \
+#    binutils \
+#    libx11-dev \
+#    libxpm-dev \
+#    libxft-dev \
+#    libxext-dev \
+#    libssl-dev \
+ #   libpcre3-dev \
+ #   xlibmesa-glu-dev \
+ #   libglew-dev \
+ #   libftgl-dev \
+ #   default-libmysqlclient-dev \
+ #   libfftw3-dev \
+ #   libcfitsio-dev \
+#    graphviz \
+#    libavahi-compat-libdnssd-dev \
+ #   libldap2-dev \
+ #   python-dev \
+ #   libxml2-dev \
+ #   libkrb5-dev \
+ #   libgsl0-dev \
+ #   qtbase5-dev \
+ #   && rm -rf /var/lib/apt/lists/*
 
 # Download and build ROOT from source
-RUN wget https://root.cern/download/root_v6.24.06.source.tar.gz && \
-    tar -xzf root_v6.24.06.source.tar.gz && \
-    mkdir root_build && cd root_build && \
-    cmake ../root-6.24.06 -DPYTHON3_EXECUTABLE=/usr/bin/python3.6 -Dpython3=ON && \
-    make -j$(nproc) && \
-    make install && \
-    rm -rf /root_build root_v6.24.06.source.tar.gz
+#RUN wget https://root.cern/download/root_v6.24.06.source.tar.gz && \
+#    tar -xzf root_v6.24.06.source.tar.gz && \
+#    mkdir root_build && cd root_build && \
+#    cmake ../root-6.24.06 -DPYTHON3_EXECUTABLE=/usr/bin/python3.6 -Dpython3=ON && \
+#    make -j$(nproc) && \
+#    make install && \
+#    rm -rf /root_build root_v6.24.06.source.tar.gz
 
 # Set environment variables for ROOT
 ENV ROOTSYS /application/root
