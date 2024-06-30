@@ -32,15 +32,15 @@ WORKDIR /application
 
 # Install necessary packages for building ROOT
 RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
-    git \
-    build-essential \
-    cmake \
-    python3-dev \
-    g++ \
-    gcc \
-    binutils \
+#    wget \
+#    curl \
+#    git \
+#    build-essential \
+#    cmake \
+#    python3-dev \
+#    g++ \
+#    gcc \
+#    binutils \
 #    libx11-dev \
 #    libxpm-dev \
 #    libxft-dev \
