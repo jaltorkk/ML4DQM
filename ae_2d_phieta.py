@@ -2,14 +2,11 @@ import ROOT
 from ROOT import TFile, gROOT
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
 import os
 import sys
 import subprocess
-import re, codecs
 from ROOT import TCanvas, TProfile, TNtuple, TH1D, TH2D, TH1F, TColor, gROOT, gPad, TText, TFile
-import ctypes
 from ROOT import gROOT, gBenchmark, gRandom, gSystem, gStyle
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve, auc, roc_auc_score
@@ -99,17 +96,20 @@ with open(run_locations.list_location, "r") as file:
 return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
 
 # Normalize training and test runs
+training_lists = np.random.rand(10, 24 * 50)
+test_lists = np.random.rand(5, 24 * 50)
+norm_list_phieta_train = np.random.rand(10)
+norm_list_phieta_test = np.random.rand(5)
+training_runs = [f"run_{i}" for i in range(10)]
+test_runs = [f"test_run_{i}" for i in range(5)]
+
+# Normalize training and test runs
 max_train=max(norm_list_phieta_train)
 max_test=max(norm_list_phieta_test)
 training_list=np.array(training_lists)  
 test_list=np.array(test_lists)
 training_list=training_list/max_train 
 test_list=test_list/max_test
-
-n_train1 = training_list.shape[0]
-n_test1 = test_list.shape[0]
-print ("The number of training images for PhiVSEta : {}, shape : {}".format(n_train1, training_list.shape))
-print ("The number of testing images for PhiVSEta : {}, shape : {}".format(n_test1, test_list.shape))
     
 #--------------------------Define a Structure of an Autoencoder-----------------------------
 # Encoder structure
@@ -195,47 +195,5 @@ for idx in range(len(training_runs)):
     hist_phieta_tr3[idx].SetStats(0)
     max_z=(np.max(loss_map_train)+(np.max(loss_map_train)/3))
     hist_phieta_tr3[idx].GetZaxis().SetRangeUser(0,max_z)
-    file_name_tr3[idx] = f"loss_maps_images/phieta_train_lossmap_{training_runs[idx]}.png"
-    c_phieta_tr3[idx].SaveAs(file_name_tr3[idx])   
-c_hist_loss_forall = TCanvas( "c_hist_loss_forall", "c_hist_loss_forall", 200, 10, 700, 500)
-c_hist_loss_forall.SetLogy()
-hist_loss_forall.Draw()
-c_hist_loss_forall.SaveAs("loss_maps_images/loss_all.png")        
-
-# ----------------- Loss Map histogram (MSE) -----------------
-for idx in range(len(test_runs)):
-    hist_name_te3 = f"hist_phieta_te3_{idx}"
-    canv_name_te3 = f"c_phieta_te3_{idx}"
-    hist_outliers_name_te3 = f"hist_outliers_name_te3_{idx}"
-    hist_outliers_te3 = {}
-    canv_outliers_name_te3 = f"c_outliers_te3_{idx}"
-    c_outliers_te3 = {}
-    hist_phieta_te3 = {}
-    c_phieta_te3 = {}
-    file_name_te3 = {}
-    file_name_outliers_te3={}
-    hist_outliers_te3[idx]=TH2F(hist_outliers_name_te3,hist_outliers_name_te3,50,-5,5,24,-3,3)
-    hist_phieta_te3[idx]=TH2F(hist_name_te3,hist_name_te3,50,-5,5,24,-3,3)
-    for i in range(0,24):
-        phi=-3.125+(0.25*(i+1))
-        for j in range(0,50):
-            eta=-5.1+(0.2*(j+1))
-            hist_phieta_te3[idx].Fill(eta,phi,loss_map_test[idx][i][j])
-            if loss_map_test[idx][i][j]>np.max(loss_map_train):
-                hist_outliers_te3[idx].Fill(eta,phi,loss_map_test[idx][i][j])
-                
-    c_phieta_te3[idx] = TCanvas( canv_name_te3, canv_name_te3, 200, 10, 700, 500)
-    hist_phieta_te3[idx].SetTitle("Test Run " + test_runs[idx] +  " (Loss Map) ; #eta ; #phi ")
-    gStyle.SetPalette(55)
-    c_phieta_te3[idx].Draw()
-    hist_phieta_te3[idx].Draw("colz")
-    hist_outliers_te3[idx].Draw("box text same")
-    hist_phieta_te3[idx].SetStats(0)
-    hist_phieta_te3[idx].GetZaxis().SetRangeUser(0,max_z)
-    file_name_te3[idx] = f"loss_maps_images/phieta_test_lossmap_{test_runs[idx]}.png"
-    c_phieta_te3[idx].SaveAs(file_name_te3[idx])
-    c_outliers_te3[idx] = TCanvas( canv_outliers_name_te3, canv_outliers_name_te3, 200, 10, 700, 500)
-    hist_outliers_te3[idx].Draw("box")
-    file_name_outliers_te3[idx] = f"loss_maps_images/outliers_test_lossmap_{test_runs[idx]}.png"
-    c_outliers_te3[idx].SaveAs(file_name_outliers_te3[idx])
-
+    file_name_tr3[idx] = f"static/phieta_train_lossmap_{training_runs[idx]}.png"
+    c_phieta_tr3[idx].SaveAs(file_name_tr3[idx])         
