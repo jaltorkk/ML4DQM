@@ -38,7 +38,7 @@ def result():
 
     # Process the runs using process_runs function
     training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
-    # , training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
+    #training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
     
     # Normalize training and test runs
     #max_train = max(norm_list_phieta_train) if norm_list_phieta_train else 1
