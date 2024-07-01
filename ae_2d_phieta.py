@@ -161,4 +161,4 @@ def run_analysis(training_run_list_str, test_run_list_str):
     training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = load_data(training_run_list, test_run_list)
     training_list, test_list = normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test)
     reg = train_autoencoder(training_list)
-    generate_loss_maps(reg, training_list, test_list, 'static/images', training_runs, test_runs)
+    generate_loss_maps(reg, training_list, test_list, 'static/', training_runs, test_runs)
