@@ -81,5 +81,66 @@ with open(run_locations.list_location, "r") as file:
 
 return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
 
+# Normalize training and test runs
+max_train=max(norm_list_phieta_train)
+max_test=max(norm_list_phieta_test)
+training_list=np.array(training_lists)  
+test_list=np.array(test_lists)
+training_list=training_list/max_train 
+test_list=test_list/max_test
 
+n_train1 = training_list.shape[0]
+n_test1 = test_list.shape[0]
+print ("The number of training images for PhiVSEta : {}, shape : {}".format(n_train1, training_list.shape))
+print ("The number of testing images for PhiVSEta : {}, shape : {}".format(n_test1, test_list.shape))
+    
+#--------------------------Define a Structure of an Autoencoder-----------------------------
+# Encoder structure
+n_encoder1 = 1024
+n_encoder2 = 512
+n_encoder3 = 256
+n_encoder4 = 128
+n_encoder5 = 64
+# latent
+n_latent = 2
+# Decoder structure
+n_decoder5 = 64
+n_decoder4 = 128
+n_decoder3 = 256
+n_decoder2 = 512
+n_decoder1 = 1024
+
+reg= MLPRegressor(hidden_layer_sizes = (n_encoder1, n_encoder2, n_encoder3, n_encoder4, n_encoder5, n_latent, 
+                   n_decoder5, n_decoder4, n_decoder3, n_decoder2, n_decoder1), 
+                   activation = 'tanh', 
+                   solver = 'adam', 
+                   learning_rate_init = 0.001, 
+                   max_iter = 100, 
+                   tol = 0.0001, 
+                   verbose = False)
+reg.fit(training_list, training_list)
+
+#------------------------------------- loss maps ------------------------------------------
+# --------------------------------- Phi VS Eta----------------------------------------------
+# Training runs
+x_pred_train = reg.predict(training_list)
+x_pred_train = np.array(x_pred_train)
+# Loss map
+loss_map_tr=(training_list-x_pred_train)**2
+loss_map_tr=np.array(loss_map_tr)
+loss_map_train=[]
+for i in range(len(loss_map_tr)):
+    img = loss_map_tr[i].reshape(24,50)
+    loss_map_train.append(img)
+
+# Test runs
+x_pred_test = reg.predict(test_list)
+x_pred_test = np.array(x_pred_test)
+# Loss map
+loss_map_te=(test_list-x_pred_test)**2
+loss_map_te=np.array(loss_map_te)
+loss_map_test=[]
+for i in range(len(loss_map_te)):
+    img = loss_map_te[i].reshape(24,50)
+    loss_map_test.append(img)    
 
