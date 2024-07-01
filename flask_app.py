@@ -37,20 +37,20 @@ def result():
     test_run_list_str = ','.join(valid_test_runs)
 
     # Process the runs using process_runs function
-    training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
-    #training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
+    training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = process_runs(training_run_list_str, test_run_list_str)
+
     
     # Normalize training and test runs
-    #max_train = max(norm_list_phieta_train) if norm_list_phieta_train else 1
-    #max_test = max(norm_list_phieta_test) if norm_list_phieta_test else 1
+    max_train = max(norm_list_phieta_train) if norm_list_phieta_train else 1
+    max_test = max(norm_list_phieta_test) if norm_list_phieta_test else 1
 
-    #training_list = np.array(training_lists)  
-    #test_list = np.array(test_lists)
-    #training_list = training_list / max_train 
-    #test_list = test_list / max_test
+    training_list = np.array(training_lists)  
+    test_list = np.array(test_lists)
+    training_list = training_list / max_train 
+    test_list = test_list / max_test
 
-   # n_train1 = training_list.shape[0]
-   # n_test1 = test_list.shape[0]
+    n_train1 = training_list.shape[0]
+    n_test1 = test_list.shape[0]
 
     # Collect results (assuming they are generated in the 'static' folder)
     images = os.listdir('static')
