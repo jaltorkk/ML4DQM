@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import os
 import numpy as np
-from ae_2d_phieta import process_runs  # Import the process_runs function
+from ae_2d_phieta import*  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
 
 app = Flask(__name__)
@@ -37,9 +37,10 @@ def result():
     test_run_list_str = ','.join(valid_test_runs)
 
     # Process the runs using process_runs function
-    training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
+    #training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
 
     # Collect results (assuming they are generated in the 'static' folder)
+    run_analysis(training_run_list_str, test_run_list_str)
     images = os.listdir('static')
 
     return render_template('result.html', 
