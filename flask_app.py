@@ -37,17 +37,17 @@ def result():
     test_run_list_str = ','.join(valid_test_runs)
 
     # Process the runs using process_runs function
-    training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = process_runs(training_run_list_str, test_run_list_str)
-
+    training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
+    # , training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
     
     # Normalize training and test runs
-    max_train = max(norm_list_phieta_train) if norm_list_phieta_train else 1
-    max_test = max(norm_list_phieta_test) if norm_list_phieta_test else 1
+    #max_train = max(norm_list_phieta_train) if norm_list_phieta_train else 1
+    #max_test = max(norm_list_phieta_test) if norm_list_phieta_test else 1
 
     training_list = np.array(training_lists)  
     test_list = np.array(test_lists)
-    training_list = training_list / max_train 
-    test_list = test_list / max_test
+    #training_list = training_list / max_train 
+    #test_list = test_list / max_test
 
     n_train1 = training_list.shape[0]
     n_test1 = test_list.shape[0]
@@ -55,15 +55,21 @@ def result():
     # Collect results (assuming they are generated in the 'static' folder)
     images = os.listdir('static')
 
-    return render_template('result.html', 
+     return render_template('result.html', 
                            training_runs=training_runs,
                            test_runs=test_runs,
-                           n_train1=n_train1, 
-                           training_list_shape=training_list.shape,
-                           n_test1=n_test1, 
-                           test_list_shape=test_list.shape,
                            images=images,
                            warnings=all_warnings)
+
+    #return render_template('result.html', 
+    #                       training_runs=training_runs,
+    #                       test_runs=test_runs,
+    #                       n_train1=n_train1, 
+    #                       training_list_shape=training_list.shape,
+    #                       n_test1=n_test1, 
+    #                       test_list_shape=test_list.shape,
+    #                       images=images,
+    #                       warnings=all_warnings)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
