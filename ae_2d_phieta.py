@@ -1,7 +1,7 @@
 import ROOT
 from ROOT import TFile, gROOT
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import os
 import sys
@@ -11,7 +11,6 @@ from ROOT import gROOT, gBenchmark, gRandom, gSystem, gStyle
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve, auc, roc_auc_score
 from ROOT import TCanvas, TFile, TProfile, TNtuple, TH1F, TH2F, TLegend, TLine, TGraph, TLatex
-import tensorflow as tf
 from sklearn.neural_network import MLPRegressor
 import run_locations
 
