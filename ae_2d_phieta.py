@@ -1,3 +1,5 @@
+import ROOT
+from ROOT import TFile, gROOT
 import numpy as np
 
 class RunLocations:
