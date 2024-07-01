@@ -40,7 +40,7 @@ def result():
     #training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
 
     # Collect results (assuming they are generated in the 'static' folder)
-    #run_analysis(training_run_list_str, test_run_list_str)
+    run_analysis(training_run_list_str, test_run_list_str)
     images = os.listdir('static')
 
     return render_template('result.html', 
