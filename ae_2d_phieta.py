@@ -142,5 +142,83 @@ loss_map_te=np.array(loss_map_te)
 loss_map_test=[]
 for i in range(len(loss_map_te)):
     img = loss_map_te[i].reshape(24,50)
-    loss_map_test.append(img)    
+    loss_map_test.append(img)   
+
+# --------------------------------------testing training data for PhiVSEta--------------------------------------
+# Reshape the training and test data to 24X50 to draw histogram
+img_train=[]
+for i in range(len(training_list)):
+    img = training_list[i].reshape(24,50)
+    img_train.append(img)
+img_test=[]
+for i in range(len(test_list)):
+    img = test_list[i].reshape(24,50)
+    img_test.append(img)
+
+# ----------------- Loss Map histogram (MSE) -----------------
+hist_loss_forall=TH1F("hist_loss_forall","hist_loss_forall",50,0,0.5)
+for idx in range(len(training_runs)):
+    hist_name_tr3 = f"hist_phieta_tr3_{idx}"
+    canv_name_tr3 = f"c_phieta_tr3_{idx}"
+    hist_phieta_tr3 = {}
+    c_phieta_tr3 = {}
+    file_name_tr3 = {}  
+    hist_phieta_tr3[idx]=TH2F(hist_name_tr3,hist_name_tr3,50,-5,5,24,-3,3)
+    for i in range(0,24):
+        phi=-3.125+(0.25*(i+1))
+        for j in range(0,50):
+            eta=-5.1+(0.2*(j+1))
+            hist_phieta_tr3[idx].Fill(eta,phi,loss_map_train[idx][i][j])
+            hist_loss_forall.Fill(loss_map_train[idx][i][j])
+    c_phieta_tr3[idx] = TCanvas( canv_name_tr3, canv_name_tr3, 200, 10, 700, 500)
+    hist_phieta_tr3[idx].SetTitle("Training Run " + training_runs[idx] +  " (Loss Map) ; #eta ; #phi ")
+    gStyle.SetPalette(55)
+    c_phieta_tr3[idx].Draw()
+    hist_phieta_tr3[idx].Draw("colz")
+    hist_phieta_tr3[idx].SetStats(0)
+    max_z=(np.max(loss_map_train)+(np.max(loss_map_train)/3))
+    hist_phieta_tr3[idx].GetZaxis().SetRangeUser(0,max_z)
+    file_name_tr3[idx] = f"loss_maps_images/phieta_train_lossmap_{training_runs[idx]}.png"
+    c_phieta_tr3[idx].SaveAs(file_name_tr3[idx])   
+c_hist_loss_forall = TCanvas( "c_hist_loss_forall", "c_hist_loss_forall", 200, 10, 700, 500)
+c_hist_loss_forall.SetLogy()
+hist_loss_forall.Draw()
+c_hist_loss_forall.SaveAs("loss_maps_images/loss_all.png")        
+
+# ----------------- Loss Map histogram (MSE) -----------------
+for idx in range(len(test_runs)):
+    hist_name_te3 = f"hist_phieta_te3_{idx}"
+    canv_name_te3 = f"c_phieta_te3_{idx}"
+    hist_outliers_name_te3 = f"hist_outliers_name_te3_{idx}"
+    hist_outliers_te3 = {}
+    canv_outliers_name_te3 = f"c_outliers_te3_{idx}"
+    c_outliers_te3 = {}
+    hist_phieta_te3 = {}
+    c_phieta_te3 = {}
+    file_name_te3 = {}
+    file_name_outliers_te3={}
+    hist_outliers_te3[idx]=TH2F(hist_outliers_name_te3,hist_outliers_name_te3,50,-5,5,24,-3,3)
+    hist_phieta_te3[idx]=TH2F(hist_name_te3,hist_name_te3,50,-5,5,24,-3,3)
+    for i in range(0,24):
+        phi=-3.125+(0.25*(i+1))
+        for j in range(0,50):
+            eta=-5.1+(0.2*(j+1))
+            hist_phieta_te3[idx].Fill(eta,phi,loss_map_test[idx][i][j])
+            if loss_map_test[idx][i][j]>np.max(loss_map_train):
+                hist_outliers_te3[idx].Fill(eta,phi,loss_map_test[idx][i][j])
+                
+    c_phieta_te3[idx] = TCanvas( canv_name_te3, canv_name_te3, 200, 10, 700, 500)
+    hist_phieta_te3[idx].SetTitle("Test Run " + test_runs[idx] +  " (Loss Map) ; #eta ; #phi ")
+    gStyle.SetPalette(55)
+    c_phieta_te3[idx].Draw()
+    hist_phieta_te3[idx].Draw("colz")
+    hist_outliers_te3[idx].Draw("box text same")
+    hist_phieta_te3[idx].SetStats(0)
+    hist_phieta_te3[idx].GetZaxis().SetRangeUser(0,max_z)
+    file_name_te3[idx] = f"loss_maps_images/phieta_test_lossmap_{test_runs[idx]}.png"
+    c_phieta_te3[idx].SaveAs(file_name_te3[idx])
+    c_outliers_te3[idx] = TCanvas( canv_outliers_name_te3, canv_outliers_name_te3, 200, 10, 700, 500)
+    hist_outliers_te3[idx].Draw("box")
+    file_name_outliers_te3[idx] = f"loss_maps_images/outliers_test_lossmap_{test_runs[idx]}.png"
+    c_outliers_te3[idx].SaveAs(file_name_outliers_te3[idx])
 
