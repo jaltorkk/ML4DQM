@@ -14,7 +14,6 @@ from ROOT import TCanvas, TFile, TProfile, TNtuple, TH1F, TH2F, TLegend, TLine, 
 import tensorflow as tf
 from sklearn.neural_network import MLPRegressor
 import run_locations
-from runlist_2d_phieta import*
 
 class RunLocations:
     list_location = 'path/to/your/list_location.txt'
