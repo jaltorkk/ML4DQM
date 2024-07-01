@@ -1,21 +1,38 @@
 # Use a Python 3.6 slim base image
 FROM python:3.6-slim
 
+# Install dependencies for Conda and ROOT
+RUN apt-get update && apt-get install -y \
+    wget \
+    bzip2 \
+    ca-certificates \
+    libglib2.0-0 \
+    libxext6 \
+    libsm6 \
+    libxrender1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Miniconda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh
+
+# Set environment variables for Conda
+ENV PATH /opt/conda/bin:$PATH
+
+# Update Conda
+RUN conda update -n base -c defaults conda -y
+
+# Create Conda environment and install Python 3.6 and ROOT
+RUN conda create -n myenv python=3.6 root -c conda-forge -y
+
 # Set up directories
 RUN mkdir /application
 WORKDIR /application
 
-# Set environment variables for ROOT
-ENV ROOTSYS /application/root
-ENV PATH $ROOTSYS/bin:$PATH
-ENV LD_LIBRARY_PATH $ROOTSYS/lib:$LD_LIBRARY_PATH
-ENV PYTHONPATH $ROOTSYS/lib:$PYTHONPATH
-
-# Create a virtual environment
-RUN python -m venv /venv
-
-# Activate the virtual environment
-ENV PATH="/venv/bin:$PATH"
+# Activate the Conda environment
+SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 
 # Copy the requirements file and install dependencies
 COPY requirements.txt .
@@ -32,9 +49,9 @@ RUN chgrp -R 0 /application/static && \
 # Environment variables
 ENV PYTHONUNBUFFERED 1
 
-# EXPOSE port 8000 to allow communication to/from server
+# Expose port 8001 to allow communication to/from the server
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-ENTRYPOINT ["python"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
 CMD ["flask_app.py"]
