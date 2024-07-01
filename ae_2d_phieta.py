@@ -15,7 +15,7 @@ from sklearn.neural_network import MLPRegressor
 import run_locations
 
 class RunLocations:
-    list_location = 'path/to/your/list_location.txt'
+    list_location = 'list_location.txt'
     def get_file_path(self, run_number):
         return [f"mock_path_to_file/Run{run_number}.root"]
 
