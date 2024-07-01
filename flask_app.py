@@ -56,7 +56,7 @@ def result():
     # Collect results (assuming they are generated in the 'static' folder)
     images = os.listdir('static')
 
-     return render_template('result.html', 
+    return render_template('result.html', 
                            training_runs=training_runs,
                            test_runs=test_runs,
                            images=images,
