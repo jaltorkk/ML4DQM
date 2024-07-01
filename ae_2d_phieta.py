@@ -38,7 +38,7 @@ def load_data(training_run_list, test_run_list):
     norm_list_phieta_train = []
     norm_list_phieta_test = []
 
-    with open(run_locations.list_location, "r") as file:
+    with open(run_locations.list_location, "w") as file:
         for line in file:
             run_number = line.strip()[14:20]
             filelocation_2 = run_locations.get_file_path(run_number)[0]
