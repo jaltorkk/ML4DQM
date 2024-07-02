@@ -14,7 +14,7 @@ from ROOT import TCanvas, TFile, TProfile, TNtuple, TH1F, TH2F, TLegend, TLine, 
 from sklearn.neural_network import MLPRegressor
 import run_locations
 
-def load_data(training_run_list, test_run_list):
+def load_data(training_run_list, test_run_list,training_run_list_str, test_run_list_str):
     training_runs = []
     test_runs = []
     training_lists = []
@@ -142,7 +142,7 @@ def generate_loss_maps(reg, training_list, test_list, output_folder, training_ru
 
 def run_analysis(training_run_list_str, test_run_list_str):
     training_run_list, test_run_list = run_locations.process_runs(training_run_list_str, test_run_list_str)
-    training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = load_data(training_run_list, test_run_list)
+    training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = load_data(training_run_list, test_run_list,training_run_list_str, test_run_list_str)
     training_list, test_list = normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test)
     reg = train_autoencoder(training_list)
     generate_loss_maps(reg, training_list, test_list, 'static/', training_runs, test_runs)
