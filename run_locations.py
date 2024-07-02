@@ -67,6 +67,7 @@ def make_txt(training_run_list_str, test_run_list_str):
     list_location = " "
     for run_number in training_run_list + test_run_list:
         file_paths = get_file_path(run_number)
+        print("-----------------file paths----------------------: ",file_paths)
         if file_paths:
             filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
             list_loc = os.path.basename(file_paths[0])
