@@ -6,6 +6,12 @@ from run_conditions import train_run_2023, test_run_2023
 
 app = Flask(__name__)
 
+def list_directory_contents(directory):
+    try:
+        return os.listdir(directory)
+    except Exception as e:
+        return str(e)
+        
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -22,6 +28,9 @@ def result():
     # Validate run lists
     valid_training_runs, training_warnings = train_run_2023(training_run_list)
     valid_test_runs, test_warnings = test_run_2023(test_run_list)
+
+    # List the contents of the specified directory
+    directory_contents = list_directory_contents('/eos/cms/store/group/comm_dqm/DQMGUI_data/Run2023/JetMET/')
 
     # Handle errors or warnings in validation
     if isinstance(valid_training_runs, str):
@@ -46,7 +55,8 @@ def result():
                            training_runs=training_runs,
                            test_runs=test_runs,
                            images=images,
-                           warnings=all_warnings)
+                           warnings=all_warnings,
+                           directory_contents=directory_contents)
 
 
 if __name__ == '__main__':
