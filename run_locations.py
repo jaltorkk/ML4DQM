@@ -43,7 +43,7 @@ def get_file_path(run_number):
 
 def make_txt():
     # Parse command-line arguments
-    training_run_list, test_run_list = process_runs()
+    training_run_list, test_run_list = process_runs(training_run_list_str, test_run_list_str)
 
     # File location
     filelocation = " "
