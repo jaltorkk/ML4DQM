@@ -1,16 +1,23 @@
+<!-- result.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Processing Results</title>
+    <title>Run Results</title>
 </head>
 <body>
-    <h1>Processing Results</h1>
+    <h1>Run Results</h1>
     <h2>Training Runs</h2>
     <p>{{ training_runs }}</p>
 
     <h2>Test Runs</h2>
     <p>{{ test_runs }}</p>
+
+    <h2>Images</h2>
+    <ul>
+        {% for image in images %}
+            <li>{{ image }}</li>
+        {% endfor %}
+    </ul>
 
     <h2>Warnings</h2>
     <ul>
@@ -19,10 +26,10 @@
         {% endfor %}
     </ul>
 
-    <h2>Generated Images</h2>
+    <h2>Directory Contents</h2>
     <ul>
-        {% for image in images %}
-            <li><img src="{{ url_for('static', filename=image) }}" alt="{{ image }}"></li>
+        {% for item in directory_contents %}
+            <li>{{ item }}</li>
         {% endfor %}
     </ul>
 </body>
