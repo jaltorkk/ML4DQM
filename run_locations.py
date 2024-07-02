@@ -44,29 +44,19 @@ def get_file_path(run_number):
 def make_txt(training_run_list_str, test_run_list_str):
     # Parse command-line arguments
     training_run_list, test_run_list = process_runs(training_run_list_str, test_run_list_str)
-
     # File location
     filelocation = " "
     list_location = " "
-    if len(training_run_list) == 0:
-        filelocation = "/eos/user/i/iatakisi/Depo/DQM_DC/2018PromptReco/"
-        list_location = "static/runlist_2018.txt"
-        with open(list_location, 'w') as file:
-            files = os.listdir(filelocation)
-            for f in files:
-                if "DQM_" in f:
-                    file.write(f"{f}\n")
-    else:
-        for run_number in training_run_list + test_run_list:
-            file_paths = get_file_path(run_number)
-            if file_paths:
-                filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
-                list_loc = os.path.basename(file_paths[0])
-                print( "-------------------------------list_loc:------------------:", list_loc)
-                with open("runlist_2023.txt", 'w') as file:
-                    file.write(f'{list_loc}\n')
-                list_location = "static/runlist_2023.txt"
-                print( "-------------------------------list_location 2023:------------------:", list_location)
+    for run_number in training_run_list + test_run_list:
+        file_paths = get_file_path(run_number)
+        if file_paths:
+            filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
+            list_loc = os.path.basename(file_paths[0])
+            print( "-------------------------------list_loc:------------------:", list_loc)
+            with open("runlist_2023.txt", 'w') as file:
+                file.write(f'{list_loc}\n')
+            list_location = "static/runlist_2023.txt"
+            print( "-------------------------------list_location 2023:------------------:", list_location)
     print("--------------------------------------------list location :-------------------------------- ",list_location)
     return list_location
                 
