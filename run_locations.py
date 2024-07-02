@@ -63,7 +63,7 @@ def make_txt(training_run_list_str, test_run_list_str):
                 filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
                 list_loc = os.path.basename(file_paths[0])
                 print( "-------------------------------list_loc:------------------:", list_loc)
-                with open("runlist_2023.txt", 'a') as file:
+                with open("runlist_2023.txt", 'w') as file:
                     file.write(f'{list_loc}\n')
                 list_location = "static/runlist_2023.txt"
                 print( "-------------------------------list_location 2023:------------------:", list_location)
