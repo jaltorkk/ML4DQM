@@ -41,7 +41,7 @@ def get_file_path(run_number):
     print(f"This run {run_number} does not exist for JetMET PD.")
     return None
 
-def make_txt():
+def make_txt(training_run_list_str, test_run_list_str):
     # Parse command-line arguments
     training_run_list, test_run_list = process_runs(training_run_list_str, test_run_list_str)
 
