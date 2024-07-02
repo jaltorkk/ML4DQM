@@ -56,7 +56,6 @@ def get_file_path(run_number):
             if run_number in file_name_2:
                 file_path_4 = [os.path.join(file_path_4, file_name_4)]
                 return file_path_4
-    print(f"This run {run_number} does not exist for JetMET PD.")
     return None
 
 def make_txt(training_run_list_str, test_run_list_str):
