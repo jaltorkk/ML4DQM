@@ -1,7 +1,7 @@
 import numpy as np
 
 def make_txt():
-    with open("static/stat.txt","wr") as file:
+    with open("static/stat.txt","w") as file:
         file.write("------------hello------------------")
 
 def process_runs(training_run_list_str, test_run_list_str):
