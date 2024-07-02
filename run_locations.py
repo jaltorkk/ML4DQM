@@ -2,14 +2,14 @@ import os
 import sys
 import ast
 
-# Define a function to parse command-line arguments
-def parse_arguments():
-    if len(sys.argv) != 3:
-        print("Usage: python run_locations.py <trainingrunlist> <testrunlist>")
-        sys.exit(1)
-    trainingrunlist = ast.literal_eval(sys.argv[1])
-    testrunlist = ast.literal_eval(sys.argv[2])
-    return trainingrunlist, testrunlist
+def process_runs(training_run_list_str, test_run_list_str):
+    # Convert the string of runs entered in the web app to a list
+    training_run_list = training_run_list_str.split(',')
+    test_run_list = test_run_list_str.split(',')
+    # Remove any leading or trailing spaces from each run
+    training_run_list = [run.strip() for run in training_run_list]
+    test_run_list = [run.strip() for run in test_run_list]
+    return training_run_list, test_run_list
 
 # Run-3 2023 file path
 def get_file_path(run_number):
@@ -43,7 +43,7 @@ def get_file_path(run_number):
 
 def make_txt():
     # Parse command-line arguments
-    trainingrunlist, testrunlist = parse_arguments()
+    training_run_list, test_run_list = process_runs()
 
     # File location
     filelocation = " "
