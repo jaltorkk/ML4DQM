@@ -48,7 +48,7 @@ def make_txt(training_run_list_str, test_run_list_str):
     # File location
     filelocation = " "
     list_location = " "
-    if len(trainingrunlist) == 0:
+    if len(training_run_list) == 0:
         filelocation = "/eos/user/i/iatakisi/Depo/DQM_DC/2018PromptReco/"
         list_location = "runlist_2018.txt"
         with open(list_location, 'w') as file:
@@ -57,7 +57,7 @@ def make_txt(training_run_list_str, test_run_list_str):
                 if "DQM_" in f:
                     file.write(f"{f}\n")
     else:
-        for run_number in trainingrunlist + testrunlist:
+        for run_number in training_run_list + test_run_list:
             file_paths = get_file_path(run_number)
             if file_paths:
                 filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
