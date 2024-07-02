@@ -14,6 +14,7 @@ from ROOT import TCanvas, TFile, TProfile, TNtuple, TH1F, TH2F, TLegend, TLine, 
 from sklearn.neural_network import MLPRegressor
 import run_locations
 
+
 def process_runs(training_run_list_str, test_run_list_str):
     # Convert the string of runs entered in the web app to a list
     training_run_list = training_run_list_str.split(',')
@@ -30,8 +31,9 @@ def load_data(training_run_list, test_run_list):
     test_lists = []
     norm_list_phieta_train = []
     norm_list_phieta_test = []
+    txt_file = run_locations.make_txt()
 
-    with open(run_locations.list_location, "w") as file:
+    with open(txt_file, "w") as file:
         for line in file:
             run_number = line.strip()[14:20]
             filelocation_2 = run_locations.get_file_path(run_number)[0]
