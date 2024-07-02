@@ -31,6 +31,7 @@ def load_data(training_run_list, test_run_list):
     norm_list_phieta_train = []
     norm_list_phieta_test = []
     txt_file = run_locations.make_txt()
+    print("--------txt file ----------: ", txt_file)
 
     with open(txt_file, "w") as file:
         for line in file:
