@@ -62,9 +62,11 @@ def make_txt():
             if file_paths:
                 filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
                 list_loc = os.path.basename(file_paths[0])
+                print( "-------------------------------list_loc:------------------:", list_loc)
                 with open("runlist_2023.txt", 'a') as file:
                     file.write(f'{list_loc}\n')
                 list_location = "runlist_2023.txt"
+                print( "-------------------------------list_location 2023:------------------:", list_location)
     print("--------------------------------------------list location :-------------------------------- ",list_location)
     return list_location
                 
