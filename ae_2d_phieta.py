@@ -24,7 +24,7 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
     txt_file = run_locations.make_txt(training_run_list_str, test_run_list_str)
     print("--------txt file ----------: ", txt_file)
 
-    with open(txt_file, "w") as file:
+    with open(txt_file, "r") as file:
         for line in file:
             run_number = line.strip()[14:20]
             filelocation_2 = run_locations.get_file_path(run_number)[0]
