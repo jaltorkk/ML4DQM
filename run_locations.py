@@ -50,7 +50,7 @@ def make_txt(training_run_list_str, test_run_list_str):
     list_location = " "
     if len(training_run_list) == 0:
         filelocation = "/eos/user/i/iatakisi/Depo/DQM_DC/2018PromptReco/"
-        list_location = "runlist_2018.txt"
+        list_location = "static/runlist_2018.txt"
         with open(list_location, 'w') as file:
             files = os.listdir(filelocation)
             for f in files:
@@ -65,7 +65,7 @@ def make_txt(training_run_list_str, test_run_list_str):
                 print( "-------------------------------list_loc:------------------:", list_loc)
                 with open("runlist_2023.txt", 'a') as file:
                     file.write(f'{list_loc}\n')
-                list_location = "runlist_2023.txt"
+                list_location = "static/runlist_2023.txt"
                 print( "-------------------------------list_location 2023:------------------:", list_location)
     print("--------------------------------------------list location :-------------------------------- ",list_location)
     return list_location
