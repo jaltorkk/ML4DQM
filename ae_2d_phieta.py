@@ -14,15 +14,6 @@ from ROOT import TCanvas, TFile, TProfile, TNtuple, TH1F, TH2F, TLegend, TLine, 
 from sklearn.neural_network import MLPRegressor
 import run_locations
 
-def process_runs(training_run_list_str, test_run_list_str):
-    # Convert the string of runs entered in the web app to a list
-    training_run_list = training_run_list_str.split(',')
-    test_run_list = test_run_list_str.split(',')
-    # Remove any leading or trailing spaces from each run
-    training_run_list = [run.strip() for run in training_run_list]
-    test_run_list = [run.strip() for run in test_run_list]
-    return training_run_list, test_run_list
-
 def load_data(training_run_list, test_run_list):
     training_runs = []
     test_runs = []
@@ -30,7 +21,7 @@ def load_data(training_run_list, test_run_list):
     test_lists = []
     norm_list_phieta_train = []
     norm_list_phieta_test = []
-    txt_file = run_locations.make_txt()
+    txt_file = run_locations.make_txt(training_run_list_str, test_run_list_str)
     print("--------txt file ----------: ", txt_file)
 
     with open(txt_file, "w") as file:
@@ -150,7 +141,7 @@ def generate_loss_maps(reg, training_list, test_list, output_folder, training_ru
         c_phieta_te3.SaveAs(file_name_te3)
 
 def run_analysis(training_run_list_str, test_run_list_str):
-    training_run_list, test_run_list = process_runs(training_run_list_str, test_run_list_str)
+    training_run_list, test_run_list = run_locations.process_runs(training_run_list_str, test_run_list_str)
     training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test = load_data(training_run_list, test_run_list)
     training_list, test_list = normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test)
     reg = train_autoencoder(training_list)
