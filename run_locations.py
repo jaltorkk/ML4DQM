@@ -41,7 +41,7 @@ def get_file_path(run_number):
     print(f"This run {run_number} does not exist for JetMET PD.")
     return None
 
-def main():
+def make_txt():
     # Parse command-line arguments
     trainingrunlist, testrunlist = parse_arguments()
 
@@ -66,8 +66,8 @@ def main():
                     file.write(f'{list_loc}\n')
                 list_location = "runlist_2023.txt"
                 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+#    main()
 
 
 # Default Example: Prompt-Reco 2018 Runs Era A (Train) and Era D (Test).
