@@ -14,13 +14,6 @@ from ROOT import TCanvas, TFile, TProfile, TNtuple, TH1F, TH2F, TLegend, TLine, 
 from sklearn.neural_network import MLPRegressor
 import run_locations
 
-class RunLocations:
-    list_location = 'list_location.txt'
-    def get_file_path(self, run_number):
-        return [f"mock_path_to_file/Run{run_number}.root"]
-
-run_locations = RunLocations()
-
 def process_runs(training_run_list_str, test_run_list_str):
     # Convert the string of runs entered in the web app to a list
     training_run_list = training_run_list_str.split(',')
