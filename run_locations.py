@@ -65,6 +65,7 @@ def make_txt():
                 with open("runlist_2023.txt", 'a') as file:
                     file.write(f'{list_loc}\n')
                 list_location = "runlist_2023.txt"
+    return list_location
                 
 #if __name__ == "__main__":
 #    main()
