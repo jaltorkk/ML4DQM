@@ -28,6 +28,7 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
         for line in file:
             run_number = line.strip()[14:20]
             filelocation_2 = run_locations.get_file_path(run_number)[0]
+            print(f"Processing run number: {run_number}")
 
             if run_number in training_run_list:
                 file = TFile.Open(filelocation_2, "READ")
@@ -49,8 +50,10 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                         lists_phieta_train.append(b_phieta)
 
                 training_lists.append(lists_phieta_train)
+                print("----------------training_lists------------",training_lists)
                 b_phieta_norm = max_bin_cont / phi_eta_entr
                 norm_list_phieta_train.append(b_phieta_norm)
+                print("-----------------------norm_list_phieta_train----------------",norm_list_phieta_train)
 
             if run_number in test_run_list:
                 file = TFile.Open(filelocation_2, "READ")
@@ -76,13 +79,6 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                 norm_list_phieta_test.append(b_phieta_norm)
 
     return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
-
-print("------------------------training_runs------------------", training_runs)
-print("------------------------test_runs---------------------", test_runs)
-print("-----------------------training_lists--------------------",training_lists)
-print("------------------------test_lists------------------------", test_lists)
-print("----------------------norm_list_phieta_train-----------------", norm_list_phieta_train)
-print("-----------------------norm_list_phieta_test----------------------", norm_list_phieta_test)
 
 def normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test):
     max_train = max(norm_list_phieta_train)
