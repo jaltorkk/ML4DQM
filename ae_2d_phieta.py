@@ -79,7 +79,7 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                         
 
                 test_lists.append(lists_phieta_test)
-                print("-----------------test_lists------------------",test_lists)
+                #print("-----------------test_lists------------------",test_lists)
                 b_phieta_norm = max_bin_cont / phi_eta_entr
                 norm_list_phieta_test.append(b_phieta_norm)
                 print("------------------norm_list_phieta_test----------------", norm_list_phieta_test)
@@ -87,6 +87,8 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
     return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
 
 def normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test):
+    print("----------------new func norm_list_phieta_train--------------",norm_list_phieta_train)
+    print("----------------new func norm_list_phieta_test--------------",norm_list_phieta_test)
     max_train = max(norm_list_phieta_train)
     max_test = max(norm_list_phieta_test)
     training_list = np.array(training_lists)
