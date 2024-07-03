@@ -31,6 +31,7 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
             print(f"Processing run number: {run_number}")
 
             if run_number in training_run_list:
+                print("-------------training run number -------------:",run_number)
                 file = TFile.Open(filelocation_2, "READ")
                 training_runs.append(run_number)
                 file.cd(f"DQMData/Run {run_number}/JetMET/Run summary/Jet/Cleanedak4PFJetsCHS")
@@ -56,8 +57,10 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                 print("-----------------------norm_list_phieta_train----------------",norm_list_phieta_train)
 
             if run_number in test_run_list:
+                print("-------------test run number -------------:",run_number)
                 file = TFile.Open(filelocation_2, "READ")
                 test_runs.append(run_number)
+                print("---------------test runs -------------",test_runs)
                 file.cd(f"DQMData/Run {run_number}/JetMET/Run summary/Jet/Cleanedak4PFJetsCHS")
                 phi_eta = gROOT.FindObject("PhiVSEta")
                 phi_eta_entr = phi_eta.GetEntries()
@@ -73,6 +76,7 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                             max_bin_cont = bin_cont_phieta
                         b_phieta = bin_cont_phieta / phi_eta_entr
                         lists_phieta_test.append(b_phieta)
+                        print("------------------------lists_phieta_test----------------",lists_phieta_test)
 
                 test_lists.append(lists_phieta_test)
                 b_phieta_norm = max_bin_cont / phi_eta_entr
