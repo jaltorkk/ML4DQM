@@ -77,6 +77,13 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
 
     return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
 
+print("------------------------training_runs------------------", training_runs)
+print("------------------------test_runs---------------------", test_runs)
+print("-----------------------training_lists--------------------",training_lists)
+print("------------------------test_lists------------------------", test_lists)
+print("----------------------norm_list_phieta_train-----------------", norm_list_phieta_train)
+print("-----------------------norm_list_phieta_test----------------------", norm_list_phieta_test)
+
 def normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test):
     max_train = max(norm_list_phieta_train)
     max_test = max(norm_list_phieta_test)
