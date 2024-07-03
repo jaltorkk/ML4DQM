@@ -37,7 +37,7 @@ def result():
     test_run_list_str = ','.join(valid_test_runs)
 
     # Process the runs using process_runs function
-    #training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
+    training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
 
     # Collect results (assuming they are generated in the 'static' folder)
     run_analysis(training_run_list_str, test_run_list_str)
