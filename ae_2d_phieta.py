@@ -76,11 +76,13 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                             max_bin_cont = bin_cont_phieta
                         b_phieta = bin_cont_phieta / phi_eta_entr
                         lists_phieta_test.append(b_phieta)
-                        print("------------------------lists_phieta_test----------------",lists_phieta_test)
+                        
 
                 test_lists.append(lists_phieta_test)
+                print("-----------------test_lists------------------",test_lists)
                 b_phieta_norm = max_bin_cont / phi_eta_entr
                 norm_list_phieta_test.append(b_phieta_norm)
+                print("------------------norm_list_phieta_test----------------", norm_list_phieta_test)
 
     return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
 
