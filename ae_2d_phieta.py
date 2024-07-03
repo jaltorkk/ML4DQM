@@ -90,10 +90,13 @@ def normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list
     print("----------------new func norm_list_phieta_train--------------",norm_list_phieta_train)
     print("----------------new func norm_list_phieta_test--------------",norm_list_phieta_test)
     max_train = max(norm_list_phieta_train)
+    print("------------------max_train-------------",max_train)
     max_test = max(norm_list_phieta_test)
+    print("--------------max_test----------------",max_test)
     training_list = np.array(training_lists)
     test_list = np.array(test_lists)
     training_list = training_list / max_train
+    print("---------------------training_list------------------",training_list)
     test_list = test_list / max_test
     return training_list, test_list
 
