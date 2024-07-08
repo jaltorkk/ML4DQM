@@ -50,6 +50,14 @@ def result():
                            images=images,
                            warnings=all_warnings)
 
+from cmsdials.auth.client import AuthClient
+from cmsdials.auth.secret_key import Credentials
+from cmsdials import Dials
+from cmsdials.filters import LumisectionHistogram1DFilters
+auth = AuthClient()
+token = os.getenv("dialenv")
+print("-----------------------token:-----------------",token)
+creds = Credentials(token=token)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
