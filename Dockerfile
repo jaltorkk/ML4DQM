@@ -10,15 +10,15 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN mkdir /application
-WORKDIR /application
+RUN mkdir /applications
+WORKDIR /applications
 
 # Copy the rest of the application
 COPY . .
 
 # Set permissions for the static folder
-RUN chgrp -R 0 /application/static && \
-    chmod -R g=u /application/static
+RUN chgrp -R 0 /applications/static && \
+    chmod -R g=u /applications/static
 
 # Environment variables
 ENV PYTHONUNBUFFERED 1
