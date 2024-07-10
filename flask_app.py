@@ -5,6 +5,14 @@ from ae_2d_phieta import process_runs  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
 
 app = Flask(__name__)
+from cmsdials.auth.client import AuthClient
+from cmsdials.auth.secret_key import Credentials
+from cmsdials import Dials
+from cmsdials.filters import LumisectionHistogram1DFilters
+auth = AuthClient()
+token = os.getenv("dialenv")
+print("-----------------------token:-----------------",token)
+creds = Credentials(token=token)
 
 @app.route('/')
 def index():
@@ -48,14 +56,6 @@ def result():
                            images=images,
                            warnings=all_warnings)
 
-from cmsdials.auth.client import AuthClient
-from cmsdials.auth.secret_key import Credentials
-from cmsdials import Dials
-from cmsdials.filters import LumisectionHistogram1DFilters
-auth = AuthClient()
-token = os.getenv("dialenv")
-print("-----------------------token:-----------------",token)
-creds = Credentials(token=token)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
