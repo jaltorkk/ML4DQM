@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask
 import os
 import numpy as np
 from ae_2d_phieta import process_runs  # Import the process_runs function
