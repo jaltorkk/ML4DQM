@@ -10,7 +10,7 @@ from cmsdials.auth.secret_key import Credentials
 from cmsdials import Dials
 from cmsdials.filters import LumisectionHistogram1DFilters
 auth = AuthClient()
-token = os.getenv("dialenv")
+token = os.getenv("dialsvar")
 print("-----------------------token:-----------------",token)
 creds = Credentials(token=token)
 
