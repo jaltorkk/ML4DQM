@@ -32,7 +32,7 @@ EXPOSE 8001
 STOPSIGNAL SIGINT
 
 ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["flask_app.py"]
 
 
 # Use a Python 3.6 slim base image
