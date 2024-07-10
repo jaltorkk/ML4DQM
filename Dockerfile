@@ -10,19 +10,15 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN mkdir /application/flask_session
+RUN mkdir /application
+WORKDIR /application
 
 # Copy the rest of the application
 COPY . .
 
+# Set permissions for the static folder
 RUN chgrp -R 0 /application/static && \
     chmod -R g=u /application/static
-
-RUN chgrp -R 0 /application/flask_session && \
-    chmod -R g=u /application/flask_session
-
-RUN chgrp -R 0 /tmp && \
-    chmod -R g=u /tmp
 
 # Environment variables
 ENV PYTHONUNBUFFERED 1
