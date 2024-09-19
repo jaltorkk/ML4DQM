@@ -26,7 +26,9 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
 
     with open(txt_file, "r") as file:
         for line in file:
+            print("---------------- line in file ----------------------", line)
             run_number = line.strip()[14:20]
+            print("-------------------- run number in txt file -------------", run_number)
             filelocation_2 = run_locations.get_file_path(run_number)[0]
             print(f"Processing run number: {run_number}")
 
