@@ -29,7 +29,7 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
             print("---------------- line in file ----------------------", line)
             run_number = line.strip()[14:20]
             print("-------------------- run number in txt file -------------", run_number)
-            filelocation_2 = run_locations.get_file_path(run_number)[0]
+            filelocation_2 = run_locations.get_file_path(run_number)
             print(f"Processing run number: {run_number}")
 
             if run_number in training_run_list:
