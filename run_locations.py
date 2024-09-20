@@ -61,28 +61,27 @@ def get_file_path(run_number):
 def make_txt(training_run_list_str, test_run_list_str):
     # Parse command-line arguments
     training_run_list, test_run_list = process_runs(training_run_list_str, test_run_list_str)
-    print("-----------------training_run_list-------------------",training_run_list)
-    print("-----------------test_run_list-------------------",test_run_list)
+    print("-----------------run_locations.py training_run_list-------------------",training_run_list)
+    print("-----------------run_locations.py test_run_list-------------------",test_run_list)
     # File location
     filelocation = " "
     list_location = " "
     for run_number in training_run_list + test_run_list:
-        print("---------------run number -------------------", run_number)
+        print("--------------- run_locations.py run number -------------------", run_number)
         file_paths = get_file_path(run_number)
-        print("-----------------file paths----------------------: ",file_paths)
+        print("-----------------run_locations.py file paths----------------------: ",file_paths)
         if file_paths:
             filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
             list_loc = os.path.basename(file_paths[0])
-            print( "-------------------------------list_loc:------------------:", list_loc)
+            print( "------------------------------- run_locations.py list_loc:------------------:", list_loc)
             with open("static/runlist_2023.txt", 'w') as file:
                 file.write(f'{list_loc}\n')
             list_location = "static/runlist_2023.txt"
-            print( "-------------------------------list_location 2023:------------------:", list_location)
-    print("--------------------------------------------list location :-------------------------------- ",list_location)
+            print( "-------------------------------run_locations.py list_location 2023:------------------:", list_location)
+    print("--------------------------------------------run_locations.py list location :-------------------------------- ",list_location)
     return list_location
                 
-#if __name__ == "__main__":
-#    main()
+
 
 
 # Default Example: Prompt-Reco 2018 Runs Era A (Train) and Era D (Test).
