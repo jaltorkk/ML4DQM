@@ -26,14 +26,17 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
 
     with open(txt_file, "r") as file:
         for line in file:
-            print("---------------- line in file ----------------------", line)
+            print("---------------- ae_2d_phieta.py line in file ----------------------", line)
             run_number = line.strip()[14:20]
             print("-------------------- run number in txt file -------------", run_number)
-            filelocation_2 = run_locations.get_file_path(run_number)
+            filelocation_2 = run_locations.get_file_path(run_number)[0]
+            filelocation_21 = run_locations.get_file_path(run_number)
+            print("------ ae_2d_phieta.py filelocation_2 getfilepath [0] -----------",filelocation_2)
+            print("------ ae_2d_phieta.py filelocation_2 getfilepath all -----------",filelocation_2)
             print(f"Processing run number: {run_number}")
 
             if run_number in training_run_list:
-                print("-------------training run number -------------:",run_number)
+                print("------------- ae_2d_phieta.py training run number -------------:",run_number)
                 file = TFile.Open(filelocation_2, "READ")
                 training_runs.append(run_number)
                 file.cd(f"DQMData/Run {run_number}/JetMET/Run summary/Jet/Cleanedak4PFJetsCHS")
@@ -53,16 +56,16 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                         lists_phieta_train.append(b_phieta)
 
                 training_lists.append(lists_phieta_train)
-                print("----------------training_lists------------",training_lists)
+                print("---------------- ae_2d_phieta.py training_lists------------",training_lists)
                 b_phieta_norm = max_bin_cont / phi_eta_entr
                 norm_list_phieta_train.append(b_phieta_norm)
-                print("-----------------------norm_list_phieta_train----------------",norm_list_phieta_train)
+                print("----------------------- ae_2d_phieta.py norm_list_phieta_train----------------",norm_list_phieta_train)
 
             if run_number in test_run_list:
-                print("-------------test run number -------------:",run_number)
+                print("------------- ae_2d_phieta.py test run number -------------:",run_number)
                 file = TFile.Open(filelocation_2, "READ")
                 test_runs.append(run_number)
-                print("---------------test runs -------------",test_runs)
+                print("--------------- ae_2d_phieta.py test runs -------------",test_runs)
                 file.cd(f"DQMData/Run {run_number}/JetMET/Run summary/Jet/Cleanedak4PFJetsCHS")
                 phi_eta = gROOT.FindObject("PhiVSEta")
                 phi_eta_entr = phi_eta.GetEntries()
@@ -81,24 +84,24 @@ def load_data(training_run_list, test_run_list,training_run_list_str, test_run_l
                         
 
                 test_lists.append(lists_phieta_test)
-                #print("-----------------test_lists------------------",test_lists)
+                print("----------------- ae_2d_phieta.py test_lists------------------",test_lists)
                 b_phieta_norm = max_bin_cont / phi_eta_entr
                 norm_list_phieta_test.append(b_phieta_norm)
-                print("------------------norm_list_phieta_test----------------", norm_list_phieta_test)
+                print("------------------ ae_2d_phieta.py norm_list_phieta_test----------------", norm_list_phieta_test)
 
     return training_runs, test_runs, training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test
 
 def normalize_data(training_lists, test_lists, norm_list_phieta_train, norm_list_phieta_test):
-    print("----------------new func norm_list_phieta_train--------------",norm_list_phieta_train)
-    print("----------------new func norm_list_phieta_test--------------",norm_list_phieta_test)
+    print("----------------ae_2d_phieta.py new func norm_list_phieta_train--------------",norm_list_phieta_train)
+    print("----------------ae_2d_phieta.py new func norm_list_phieta_test--------------",norm_list_phieta_test)
     max_train = max(norm_list_phieta_train)
-    print("------------------max_train-------------",max_train)
+    print("------------------ae_2d_phieta.py max_train-------------",max_train)
     max_test = max(norm_list_phieta_test)
-    print("--------------max_test----------------",max_test)
+    print("--------------ae_2d_phieta.py max_test----------------",max_test)
     training_list = np.array(training_lists)
     test_list = np.array(test_lists)
     training_list = training_list / max_train
-    print("---------------------training_list------------------",training_list)
+    print("---------------------ae_2d_phieta.py training_list after norm------------------",training_list)
     test_list = test_list / max_test
     return training_list, test_list
 
