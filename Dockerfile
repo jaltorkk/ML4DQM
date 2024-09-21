@@ -30,7 +30,7 @@ STOPSIGNAL SIGINT
 ENTRYPOINT ["python"]
 #CMD ["flask_app.py"]
 # Set the Gunicorn to handle requests, increase timeout, and set worker processes
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8001", "--timeout", "120", "flask_app:app"]
+CMD ["gunicorn", "--workers", "5", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
 
 # The 'flask_app:app' assumes you have a Flask application file named `flask_app.py` with an app instance called `app`
 # Copy the requirements file and install dependencies
