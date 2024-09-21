@@ -23,13 +23,16 @@ RUN chgrp -R 0 /applications/static && \
 # Environment variables
 ENV PYTHONUNBUFFERED 1
 
-# EXPOSE port 8000 to allow communication to/from server
+# EXPOSE port 8001 to allow communication to/from server
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
 ENTRYPOINT ["python"]
-CMD ["flask_app.py"]
+#CMD ["flask_app.py"]
+# Set the Gunicorn to handle requests, increase timeout, and set worker processes
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8001", "--timeout", "120", "flask_app:app"]
 
+# The 'flask_app:app' assumes you have a Flask application file named `flask_app.py` with an app instance called `app`
 # Copy the requirements file and install dependencies
 COPY requirements.txt .
 
