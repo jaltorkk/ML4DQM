@@ -54,4 +54,5 @@ EXPOSE 8001
 STOPSIGNAL SIGINT
 
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
-CMD ["flask_app.py"]
+#CMD ["flask_app.py"]
+CMD ["gunicorn", "--workers", "5", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
