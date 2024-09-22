@@ -60,4 +60,4 @@ ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
 #ENTRYPOINT ["/opt/conda/envs/myenv/bin/gunicorn"]
 
 #CMD ["flask_app.py"]
-CMD ["gunicorn", "--workers", "5", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
+CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
