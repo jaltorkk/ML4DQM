@@ -57,7 +57,10 @@ STOPSIGNAL SIGINT
 #ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
 #CMD ["flask_app.py"]
 
+# Use gunicorn in the entrypoint directly
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
-CMD ["gunicorn", "--config", "gunicorn_config.py", "flask_app:app"]
+
+# CMD passes arguments to gunicorn
+CMD ["--config", "gunicorn_config.py", "flask_app:app"]
 
 #CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
