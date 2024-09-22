@@ -37,6 +37,7 @@ SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 # Copy the requirements file and install dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
+    pip install gunicorn && \
     pip install -r requirements.txt
 
 # Copy the application code
