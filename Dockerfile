@@ -54,10 +54,9 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-#ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
-# Activate Conda environment and call gunicorn directly
-#ENTRYPOINT ["/opt/conda/envs/myenv/bin/gunicorn"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
+#ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
 
 #CMD ["flask_app.py"]
-CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
+CMD["gunicorn --chdir app flask_app:app -w 2 --threads 2 -b 0.0.0.0:8003"]
+#CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
