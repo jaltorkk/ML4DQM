@@ -54,7 +54,7 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-#ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
 #ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
 CMD ["gunicorn", "--config", "gunicorn_config.py", "flask_app:app"]
 #CMD ["flask_app.py"]
