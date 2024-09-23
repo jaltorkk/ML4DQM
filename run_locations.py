@@ -2,19 +2,21 @@ import os
 import sys
 import ast
 
-# Define a function to parse command-line arguments
-def parse_arguments():
-    if len(sys.argv) != 3:
-        print("Usage: python run_locations.py <trainingrunlist> <testrunlist>")
-        sys.exit(1)
-    trainingrunlist = ast.literal_eval(sys.argv[1])
-    testrunlist = ast.literal_eval(sys.argv[2])
-    return trainingrunlist, testrunlist
+def process_runs(training_run_list_str, test_run_list_str):
+    # Convert the string of runs entered in the web app to a list
+    training_run_list = training_run_list_str.split(',')
+    test_run_list = test_run_list_str.split(',')
+    # Remove any leading or trailing spaces from each run
+    training_run_list = [run.strip() for run in training_run_list]
+    test_run_list = [run.strip() for run in test_run_list]
+    return training_run_list, test_run_list
 
 # Run-3 2023 file path
 def get_file_path(run_number):
     original_path_1 = "/eos/cms/store/group/comm_dqm/DQMGUI_data/Run2023/JetMET1/" # this is the locatrion where all runs are
     original_path_2 = "/eos/cms/store/group/comm_dqm/DQMGUI_data/Run2023/JetMET/"
+    original_path_3 = "/eos/cms/store/group/comm_dqm/DQMGUI_data/Run2024/JetMET0/"
+    original_path_4 = "/eos/cms/store/group/comm_dqm/DQMGUI_data/Run2024/JetMET1/"
     count = 0
     run_no=int(run_number)
     while run_no != 0:
@@ -23,6 +25,8 @@ def get_file_path(run_number):
     file_prefix = run_number[:(count-2)].zfill(7)
     file_path_1 = os.path.join(original_path_1, file_prefix+"xx") # this to insert the run number to the original location
     file_path_2 = os.path.join(original_path_2, file_prefix+"xx")
+    file_path_3 = os.path.join(original_path_3, file_prefix+"xx")
+    file_path_4 = os.path.join(original_path_4, file_prefix+"xx")
 
     if os.path.exists(file_path_1):
         list_location_all_1 = os.listdir(file_path_1)
@@ -38,36 +42,46 @@ def get_file_path(run_number):
             if run_number in file_name_2:
                 file_path_2 = [os.path.join(file_path_2, file_name_2)]
                 return file_path_2
-    print(f"This run {run_number} does not exist for JetMET PD.")
+    elif os.path.exists(file_path_3):
+        list_location_all_3 = os.listdir(file_path_3)
+        list_location_3 = [file for file in list_location_all_3 if file.endswith('.root')]
+        for file_name_3 in list_location_3:
+            if run_number in file_name_3:
+                file_path_3 = [os.path.join(file_path_3, file_name_3)]
+                return file_path_3
+    elif os.path.exists(file_path_4):
+        list_location_all_4 = os.listdir(file_path_4)
+        list_location_4 = [file for file in list_location_all_4 if file.endswith('.root')]
+        for file_name_4 in list_location_4:
+            if run_number in file_name_2:
+                file_path_4 = [os.path.join(file_path_4, file_name_4)]
+                return file_path_4
     return None
 
-def main():
+def make_txt(training_run_list_str, test_run_list_str):
     # Parse command-line arguments
-    trainingrunlist, testrunlist = parse_arguments()
-
+    training_run_list, test_run_list = process_runs(training_run_list_str, test_run_list_str)
+    print("-----------------run_locations.py training_run_list-------------------",training_run_list)
+    print("-----------------run_locations.py test_run_list-------------------",test_run_list)
     # File location
     filelocation = " "
     list_location = " "
-    if len(trainingrunlist) == 0:
-        filelocation = "/eos/user/i/iatakisi/Depo/DQM_DC/2018PromptReco/"
-        list_location = "runlist_2018.txt"
-        with open(list_location, 'w') as file:
-            files = os.listdir(filelocation)
-            for f in files:
-                if "DQM_" in f:
-                    file.write(f"{f}\n")
-    else:
-        for run_number in trainingrunlist + testrunlist:
-            file_paths = get_file_path(run_number)
-            if file_paths:
-                filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
-                list_loc = os.path.basename(file_paths[0])
-                with open("runlist_2023.txt", 'a') as file:
-                    file.write(f'{list_loc}\n')
-                list_location = "runlist_2023.txt"
+    for run_number in training_run_list + test_run_list:
+        print("--------------- run_locations.py run number -------------------", run_number)
+        file_paths = get_file_path(run_number)
+        print("-----------------run_locations.py file paths----------------------: ",file_paths)
+        if file_paths:
+            filelocation = file_paths[0][:file_paths[0].rfind('/') + 1]
+            list_loc = os.path.basename(file_paths[0])
+            print( "------------------------------- run_locations.py list_loc:------------------:", list_loc)
+            with open("static/runlist_2023.txt", 'a') as file:
+                file.write(f'{list_loc}\n')
+            list_location = "static/runlist_2023.txt"
+            print( "-------------------------------run_locations.py list_location 2023:------------------:", list_location)
+    print("--------------------------------------------run_locations.py list location :-------------------------------- ",list_location)
+    return list_location
                 
-if __name__ == "__main__":
-    main()
+
 
 
 # Default Example: Prompt-Reco 2018 Runs Era A (Train) and Era D (Test).
