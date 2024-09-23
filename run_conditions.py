@@ -52,6 +52,7 @@ def train_run_2023(train_runs_2023):
     valid_runs = []
     warnings = []
     for run in train_runs_2023:
+        print("-------------run_condition.py train runs----------", run)
         run = str(run).strip()  # Convert to string and remove any leading or trailing spaces
         if len(run) != 6 or not run.isdigit():
             return f"value {run} is out of range for type integer."
@@ -70,6 +71,7 @@ def test_run_2023(test_runs_2023):
     valid_runs = []
     warnings = []
     for run in test_runs_2023:
+        print("-------------run_condition.py test runs----------", run)
         run = str(run).strip()  # Convert to string and remove any leading or trailing spaces
         if len(run) != 6 or not run.isdigit():
             return f"value {run} is out of range for type integer."
@@ -78,4 +80,5 @@ def test_run_2023(test_runs_2023):
         else:
             valid_runs.append(run)
     return valid_runs, warnings
+  
   
