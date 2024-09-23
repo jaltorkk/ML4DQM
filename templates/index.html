@@ -3,14 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Run Processing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.2em;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="text"] {
+            font-size: 1.5em; /* Increased font size */
+            padding: 10px; /* Added padding */
+            width: 100%; /* Full width */
+            max-width: 400px; /* Optional maximum width */
+            margin-bottom: 20px; /* Space between fields */
+        }
+
+        input[type="submit"] {
+            font-size: 1.5em; /* Increased font size */
+            padding: 10px 20px; /* Added padding */
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            border: none; /* No border */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin-top: 10px; /* Space above button */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
 </head>
 <body>
     <h1>Enter Training and Test Run Lists</h1>
     <form action="/result" method="post">
         <label for="training_run_list">Training Run List:</label>
-        <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 1223,1233,..."><br>
+        <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765, 12344">
+        
         <label for="test_run_list">Test Run List:</label>
-        <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 1224,1234,..."><br>
+        <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767">
+        
         <input type="submit" value="Submit">
     </form>
 </body>
