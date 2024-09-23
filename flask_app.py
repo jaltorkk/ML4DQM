@@ -15,7 +15,7 @@ token = os.getenv("dialsvar")
 print("-----------------------token:-----------------",token)
 creds = Credentials(token=token)
 
-def clear_png_files_in_static_folder():
+def clear_static_folder():
     folder = 'static'
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
@@ -33,6 +33,9 @@ def index():
 
 @app.route('/result', methods=['POST'])
 def result():
+    # Clear existing PNG files in the 'static' folder before generating new ones
+    clear_static_folder()
+    
     training_run_list = request.form['training_run_list']
     test_run_list = request.form['test_run_list']
 
