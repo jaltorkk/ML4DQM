@@ -2,11 +2,11 @@ import os
 
 
 
-workers = int(os.environ.get('GUNICORN_PROCESSES', '8'))
+workers = int(os.environ.get('GUNICORN_PROCESSES', '16'))
 
-threads = int(os.environ.get('GUNICORN_THREADS', '16'))
+threads = int(os.environ.get('GUNICORN_THREADS', '28'))
 
-timeout = int(os.environ.get('GUNICORN_TIMEOUT', '1000'))
+timeout = int(os.environ.get('GUNICORN_TIMEOUT', '5000'))
 
 bind = os.environ.get('GUNICORN_BIND', '0.0.0.0:8001')
 
