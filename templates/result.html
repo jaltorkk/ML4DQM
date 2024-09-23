@@ -3,9 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Processing Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            font-size: 1.5em; /* Set the same size for headers */
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 1.2em; /* Set font size for paragraphs */
+            margin-bottom: 20px; /* Space below paragraphs */
+        }
+
+        ul {
+            list-style-type: none; /* Remove bullets from list */
+            padding: 0; /* Remove padding */
+        }
+
+        li {
+            font-size: 1.2em; /* Font size for list items */
+            margin-bottom: 10px; /* Space between list items */
+        }
+    </style>
 </head>
 <body>
-    <h1>Processing Results</h1>
     
     <h2>Training Runs</h2>
     <p>{{ training_runs }}</p>
@@ -13,14 +38,16 @@
     <h2>Test Runs</h2>
     <p>{{ test_runs }}</p>
 
-    <h2>Warnings</h2>
-    <ul>
-        {% for warning in warnings %}
-            <li>{{ warning }}</li>
-        {% endfor %}
-    </ul>
+    {% if warnings %}
+        <h2>Warnings</h2>
+        <ul>
+            {% for warning in warnings %}
+                <li>{{ warning }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-    <h2>Generated Images</h2>
+    <h2>Generated Loss Maps</h2>
     <ul>
         {% for image in images %}
             {% if image.endswith('.png') or image.endswith('.jpg') or image.endswith('.jpeg') %}
