@@ -1,19 +1,10 @@
 import shutil
-from flask import Flask
+from flask import Flask, render_template, request
 import os
 import numpy as np
-from ae_2d_phieta import process_runs  # Import the process_runs function
+from ae_2d_phieta import *  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
-
-app = Flask(__name__)
-from cmsdials.auth.client import AuthClient
-from cmsdials.auth.secret_key import Credentials
-from cmsdials import Dials
-from cmsdials.filters import LumisectionHistogram1DFilters
-auth = AuthClient()
-token = os.getenv("dialsvar")
-print("-----------------------token:-----------------",token)
-creds = Credentials(token=token)
+import run_locations
 
 def clear_static_folder():
     folder = 'static'
@@ -26,6 +17,7 @@ def clear_static_folder():
         except Exception as e:
             print(f"Failed to delete {file_path}. Reason: {e}")
 
+app = Flask(__name__)
 
 @app.route('/')
 def index():
@@ -61,9 +53,10 @@ def result():
     test_run_list_str = ','.join(valid_test_runs)
 
     # Process the runs using process_runs function
-    training_runs, test_runs = process_runs(training_run_list_str, test_run_list_str)
+    training_runs, test_runs = run_locations.process_runs(training_run_list_str, test_run_list_str)
 
     # Collect results (assuming they are generated in the 'static' folder)
+    run_analysis(training_run_list_str, test_run_list_str)
     images = os.listdir('static')
 
     return render_template('result.html', 
@@ -72,6 +65,14 @@ def result():
                            images=images,
                            warnings=all_warnings)
 
+#from cmsdials.auth.client import AuthClient
+#from cmsdials.auth.secret_key import Credentials
+#from cmsdials import Dials
+#from cmsdials.filters import LumisectionHistogram1DFilters
+#auth = AuthClient()
+#token = os.getenv("dialenv")
+#print("-----------------------token:-----------------",token)
+#creds = Credentials(token=token)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
