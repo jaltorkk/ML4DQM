@@ -1,21 +1,9 @@
-import shutil
 from flask import Flask, render_template, request
 import os
 import numpy as np
 from ae_2d_phieta import *  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
 import run_locations
-
-def clear_static_folder():
-    folder = 'static'
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            # Check if the file is a PNG before deleting
-            if filename.endswith('.png') and os.path.isfile(file_path):
-                os.unlink(file_path)  # Remove the file
-        except Exception as e:
-            print(f"Failed to delete {file_path}. Reason: {e}")
 
 app = Flask(__name__)
 
@@ -25,9 +13,6 @@ def index():
 
 @app.route('/result', methods=['POST'])
 def result():
-    # Clear existing PNG files in the 'static' folder before generating new ones
-    clear_static_folder()
-    
     training_run_list = request.form['training_run_list']
     test_run_list = request.form['test_run_list']
 
