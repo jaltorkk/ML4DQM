@@ -1,38 +1,66 @@
-# Inherit python image
-FROM python:3.9-slim-buster
+# Use a Python 3.6 slim base image
+FROM python:3.6-slim
+
+# Install dependencies for Conda and ROOT
+RUN apt-get update && apt-get install -y \
+    wget \
+    bzip2 \
+    ca-certificates \
+    libglib2.0-0 \
+    libxext6 \
+    libsm6 \
+    libxrender1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Miniconda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh
+
+# Set environment variables for Conda
+ENV PATH /opt/conda/bin:$PATH
+
+# Update Conda
+RUN conda update -n base -c defaults conda -y
+
+# Create Conda environment and install Python 3.6 and ROOT
+RUN conda create -n myenv python=3.6 root -c conda-forge -y
 
 # Set up directories
 RUN mkdir /application
 WORKDIR /application
 
-# Copy python dependencies and install these
+# Activate the Conda environment
+SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
+
+# Copy the requirements file and install dependencies
 COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install gunicorn && \
+    pip install -r requirements.txt
 
-RUN mkdir /applications
-WORKDIR /applications
-
-# Copy the rest of the application
+# Copy the application code
 COPY . .
 
 # Set permissions for the static folder
-RUN chgrp -R 0 /applications/static && \
-    chmod -R g=u /applications/static
+RUN chgrp -R 0 /application/static && \
+    chmod -R g=u /application/static
 
 # Environment variables
 ENV PYTHONUNBUFFERED 1
 
-# EXPOSE port 8001 to allow communication to/from server
+# Expose port 8001 to allow communication to/from the server
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-ENTRYPOINT ["python"]
+#ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
 #CMD ["flask_app.py"]
-# Set the Gunicorn to handle requests, increase timeout, and set worker processes
-CMD ["gunicorn", "--workers", "5", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
 
-# The 'flask_app:app' assumes you have a Flask application file named `flask_app.py` with an app instance called `app`
-# Copy the requirements file and install dependencies
-COPY requirements.txt .
+# Use gunicorn in the entrypoint directly
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
 
+# CMD passes arguments to gunicorn
+CMD ["--config", "gunicorn_config.py", "flask_app:app"]
+
+#CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
