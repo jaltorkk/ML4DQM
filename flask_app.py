@@ -1,3 +1,4 @@
+import shutil
 from flask import Flask
 import os
 import numpy as np
@@ -13,6 +14,18 @@ auth = AuthClient()
 token = os.getenv("dialsvar")
 print("-----------------------token:-----------------",token)
 creds = Credentials(token=token)
+
+def clear_png_files_in_static_folder():
+    folder = 'static'
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            # Check if the file is a PNG before deleting
+            if filename.endswith('.png') and os.path.isfile(file_path):
+                os.unlink(file_path)  # Remove the file
+        except Exception as e:
+            print(f"Failed to delete {file_path}. Reason: {e}")
+
 
 @app.route('/')
 def index():
