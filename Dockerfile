@@ -1,7 +1,7 @@
 # Use a Python 3.6 slim base image
 FROM python:3.6-slim
 
-# Install dependencies for Conda and ROOT
+# Install dependencies for Conda, Redis, and ROOT
 RUN apt-get update && apt-get install -y \
     wget \
     bzip2 \
@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
+    redis-server \  # Add Redis
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -53,6 +54,7 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
-CMD ["flask_app.py"]
+# Start Redis server before the application starts
+CMD redis-server & conda run --no-capture-output -n myenv python flask_app.py
+
 
