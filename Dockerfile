@@ -10,12 +10,19 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
-    software-properties-common && \
-    add-apt-repository ppa:redislabs/redis && \
-    apt-get update && \
-    apt-get install -y redis-server && \
-    apt-get clean && \
+    build-essential \
+    tcl \
+    && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Download and Install Redis
+RUN wget http://download.redis.io/releases/redis-6.2.6.tar.gz && \
+    tar xzf redis-6.2.6.tar.gz && \
+    cd redis-6.2.6 && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -rf redis-6.2.6 redis-6.2.6.tar.gz
 
 # Install Miniconda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
@@ -61,6 +68,7 @@ STOPSIGNAL SIGINT
 CMD redis-server & \
     conda run --no-capture-output -n myenv celery -A flask_app.celery worker --loglevel=info & \
     conda run --no-capture-output -n myenv python flask_app.py
+
 
 
 
