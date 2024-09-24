@@ -10,9 +10,12 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
-    redis-server \  # Add Redis
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    software-properties-common && \
+    add-apt-repository ppa:redislabs/redis && \
+    apt-get update && \
+    apt-get install -y redis-server && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Miniconda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
@@ -58,6 +61,7 @@ STOPSIGNAL SIGINT
 CMD redis-server & \
     conda run --no-capture-output -n myenv celery -A flask_app.celery worker --loglevel=info & \
     conda run --no-capture-output -n myenv python flask_app.py
+
 
 
 
