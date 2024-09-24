@@ -54,7 +54,10 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-# Start Redis server before the application starts
-CMD redis-server & conda run --no-capture-output -n myenv python flask_app.py
+# Start Redis, Celery, and Flask app
+CMD redis-server & \
+    conda run --no-capture-output -n myenv celery -A flask_app.celery worker --loglevel=info & \
+    conda run --no-capture-output -n myenv python flask_app.py
+
 
 
