@@ -37,7 +37,6 @@ SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 # Copy the requirements file and install dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
-    pip install gunicorn && \
     pip install -r requirements.txt
 
 # Copy the application code
@@ -54,13 +53,6 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-#ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
-#CMD ["flask_app.py"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
+CMD ["flask_app.py"]
 
-# Use gunicorn in the entrypoint directly
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
-
-# CMD passes arguments to gunicorn
-CMD ["--config", "gunicorn_config.py", "flask_app:app"]
-
-#CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
