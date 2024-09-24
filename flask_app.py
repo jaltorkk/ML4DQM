@@ -1,57 +1,63 @@
-from celery import Celery
-from flask import Flask, render_template, request, url_for, redirect
 import os
-import time
+from flask import Flask, render_template, request, redirect, url_for, flash
+from celery import Celery
+import run_locations
+from run_conditions import train_run_2023, test_run_2023
 
 app = Flask(__name__)
-celery = Celery(app.name, broker='redis://localhost:6379/0')
+app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
+
+@celery.task
+def process_runs(training_runs, test_runs):
+    # Perform the long-running task here
+    training_runs, test_runs = run_locations.process_runs(training_runs, test_runs)
+    return training_runs, test_runs
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Celery Task for processing runs
-@celery.task(bind=True)
-def process_runs_task(self, training_run_list_str, test_run_list_str):
-    # Simulate a long process
-    from run_locations import process_runs
-    from ae_2d_phieta import run_analysis
-    run_analysis(training_run_list_str, test_run_list_str)
-    return 'Done'
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    # Get the run list inputs
+@app.route('/result', methods=['POST'])
+def result():
     training_run_list = request.form['training_run_list']
     test_run_list = request.form['test_run_list']
 
-    # Convert run lists to lists of integers
-    training_run_list = [run.strip() for run in training_run_list.split(',')]
-    test_run_list = [run.strip() for run in test_run_list.split(',')]
+    # Validate and process run lists
+    valid_training_runs, training_warnings = train_run_2023(training_run_list.split(','))
+    valid_test_runs, test_warnings = test_run_2023(test_run_list.split(','))
 
-    # Trigger background task
-    task = process_runs_task.apply_async(args=[','.join(training_run_list), ','.join(test_run_list)])
+    if isinstance(valid_training_runs, str) or isinstance(valid_test_runs, str):
+        return "Invalid runs provided."
+
+    # Trigger the Celery task
+    task = process_runs.apply_async(args=(valid_training_runs, valid_test_runs))
     
-    # Redirect to the loading page with the task ID
-    return redirect(url_for('loading', task_id=task.id))
+    return redirect(url_for('task_status', task_id=task.id))
 
-@app.route('/loading/<task_id>')
-def loading(task_id):
-    return render_template('loading.html', task_id=task_id)
-
-@app.route('/result/<task_id>')
-def result(task_id):
-    # Fetch the task status and return result page
-    task = celery.AsyncResult(task_id)
-    if task.state == 'SUCCESS':
-        images = os.listdir('static')
-        return render_template('result.html', images=images)
+@app.route('/status/<task_id>')
+def task_status(task_id):
+    task = process_runs.AsyncResult(task_id)
+    if task.state == 'PENDING':
+        response = {
+            'state': task.state,
+            'status': 'Pending...'
+        }
+    elif task.state != 'FAILURE':
+        response = {
+            'state': task.state,
+            'result': task.result,
+            'status': 'Processing...'
+        }
     else:
-        return "Task still running or failed", 202
+        response = {
+            'state': task.state,
+            'status': str(task.info),  # this is the exception raised
+        }
+    return render_template('status.html', response=response)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
-
-
-
-
