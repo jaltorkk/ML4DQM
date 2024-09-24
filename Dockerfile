@@ -50,12 +50,12 @@ RUN chgrp -R 0 /application/static && \
 # Environment variables
 ENV PYTHONUNBUFFERED 1
 
-# Expose port 8001 to allow communication to/from the server
-EXPOSE 8001
-STOPSIGNAL SIGINT
+# Expose ports for Flask and Redis
+EXPOSE 8001 6379
 
-# Start the Flask app
-CMD ["python", "flask_app.py"]
+# Start Redis and the Flask app
+CMD service redis-server start && conda run -n myenv python flask_app.py
+
 
 
 
