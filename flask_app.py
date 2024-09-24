@@ -5,6 +5,7 @@ import numpy as np
 from ae_2d_phieta import *  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
 import run_locations
+from celery import Celery  # Import Celery
 
 def clear_static_folder():
     folder = 'static'
@@ -17,11 +18,28 @@ def clear_static_folder():
         except Exception as e:
             print(f"Failed to delete {file_path}. Reason: {e}")
 
+# Initialize Flask app
 app = Flask(__name__)
+
+# Celery configuration
+app.config.update(
+    CELERY_BROKER_URL='redis://localhost:6379/0',
+    CELERY_RESULT_BACKEND='redis://localhost:6379/0'
+)
+
+# Initialize Celery
+celery = Celery(app.name, backend=app.config['CELERY_RESULT_BACKEND'], broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+# Define a background task using Celery
+@celery.task
+def process_runs_task(training_run_list_str, test_run_list_str):
+    run_locations.process_runs(training_run_list_str, test_run_list_str)
+    run_analysis(training_run_list_str, test_run_list_str)
 
 @app.route('/result', methods=['POST'])
 def result():
@@ -52,30 +70,19 @@ def result():
     training_run_list_str = ','.join(valid_training_runs)
     test_run_list_str = ','.join(valid_test_runs)
 
-    # Process the runs using process_runs function
-    training_runs, test_runs = run_locations.process_runs(training_run_list_str, test_run_list_str)
+    # Call the Celery task asynchronously
+    task = process_runs_task.apply_async(args=[training_run_list_str, test_run_list_str])
 
-    # Collect results (assuming they are generated in the 'static' folder)
-    run_analysis(training_run_list_str, test_run_list_str)
-    images = os.listdir('static')
+    # Collect results asynchronously
+    # You can add a front-end component (like polling) to check the status of the task if needed
 
-    return render_template('result.html', 
-                           training_runs=training_runs,
-                           test_runs=test_runs,
-                           images=images,
+    return render_template('result.html',
+                           task_id=task.id,  # Pass task ID to track status
                            warnings=all_warnings)
-
-#from cmsdials.auth.client import AuthClient
-#from cmsdials.auth.secret_key import Credentials
-#from cmsdials import Dials
-#from cmsdials.filters import LumisectionHistogram1DFilters
-#auth = AuthClient()
-#token = os.getenv("dialenv")
-#print("-----------------------token:-----------------",token)
-#creds = Credentials(token=token)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
+
 
 
 
