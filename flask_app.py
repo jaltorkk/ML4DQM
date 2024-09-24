@@ -1,51 +1,27 @@
-import shutil
-from flask import Flask, render_template, request
+from celery import Celery
+from flask import Flask, render_template, request, url_for, redirect
 import os
-import numpy as np
-from ae_2d_phieta import *  # Import the process_runs function
-from run_conditions import train_run_2023, test_run_2023
-import run_locations
-from celery import Celery  # Import Celery
+import time
 
-def clear_static_folder():
-    folder = 'static'
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            # Check if the file is a PNG before deleting
-            if filename.endswith('.png') and os.path.isfile(file_path):
-                os.unlink(file_path)  # Remove the file
-        except Exception as e:
-            print(f"Failed to delete {file_path}. Reason: {e}")
-
-# Initialize Flask app
 app = Flask(__name__)
-
-# Celery configuration
-app.config.update(
-    CELERY_BROKER_URL='redis://localhost:6379/0',
-    CELERY_RESULT_BACKEND='redis://localhost:6379/0'
-)
-
-# Initialize Celery
-celery = Celery(app.name, backend=app.config['CELERY_RESULT_BACKEND'], broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+celery = Celery(app.name, broker='redis://localhost:6379/0')
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Define a background task using Celery
-@celery.task
-def process_runs_task(training_run_list_str, test_run_list_str):
-    run_locations.process_runs(training_run_list_str, test_run_list_str)
+# Celery Task for processing runs
+@celery.task(bind=True)
+def process_runs_task(self, training_run_list_str, test_run_list_str):
+    # Simulate a long process
+    from run_locations import process_runs
+    from ae_2d_phieta import run_analysis
     run_analysis(training_run_list_str, test_run_list_str)
+    return 'Done'
 
-@app.route('/result', methods=['POST'])
-def result():
-    # Clear existing PNG files in the 'static' folder before generating new ones
-    clear_static_folder()
-    
+@app.route('/submit', methods=['POST'])
+def submit():
+    # Get the run list inputs
     training_run_list = request.form['training_run_list']
     test_run_list = request.form['test_run_list']
 
@@ -53,36 +29,28 @@ def result():
     training_run_list = [run.strip() for run in training_run_list.split(',')]
     test_run_list = [run.strip() for run in test_run_list.split(',')]
 
-    # Validate run lists
-    valid_training_runs, training_warnings = train_run_2023(training_run_list)
-    valid_test_runs, test_warnings = test_run_2023(test_run_list)
+    # Trigger background task
+    task = process_runs_task.apply_async(args=[','.join(training_run_list), ','.join(test_run_list)])
+    
+    # Redirect to the loading page with the task ID
+    return redirect(url_for('loading', task_id=task.id))
 
-    # Handle errors or warnings in validation
-    if isinstance(valid_training_runs, str):
-        return f"Error in training run list: {valid_training_runs}"
-    if isinstance(valid_test_runs, str):
-        return f"Error in test run list: {valid_test_runs}"
+@app.route('/loading/<task_id>')
+def loading(task_id):
+    return render_template('loading.html', task_id=task_id)
 
-    # Combine warnings
-    all_warnings = training_warnings + test_warnings
-
-    # Now you can use these valid runs in your function call
-    training_run_list_str = ','.join(valid_training_runs)
-    test_run_list_str = ','.join(valid_test_runs)
-
-    # Call the Celery task asynchronously
-    task = process_runs_task.apply_async(args=[training_run_list_str, test_run_list_str])
-
-    # Collect results asynchronously
-    # You can add a front-end component (like polling) to check the status of the task if needed
-
-    return render_template('result.html',
-                           task_id=task.id,  # Pass task ID to track status
-                           warnings=all_warnings)
+@app.route('/result/<task_id>')
+def result(task_id):
+    # Fetch the task status and return result page
+    task = celery.AsyncResult(task_id)
+    if task.state == 'SUCCESS':
+        images = os.listdir('static')
+        return render_template('result.html', images=images)
+    else:
+        return "Task still running or failed", 202
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
-
 
 
 
