@@ -2,57 +2,152 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Run Processing</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f8f9fa; /* Light background for modern look */
         }
 
-        h1 {
-            font-size: 2em;
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #343a40; /* Dark header background */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        header img {
+            height: 50px; /* Logo size */
+        }
+
+        header .help-btn {
+            background-color: #007bff; /* Bootstrap-like primary color */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        header .help-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        main {
+            margin-top: 20px;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-around;
             margin-bottom: 20px;
         }
 
-        label {
+        .button-group div {
+            text-align: center;
+        }
+
+        .button-group button {
+            background-color: #6c757d; /* Bootstrap secondary color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .button-group button:hover {
+            background-color: #5a6268; /* Darker gray on hover */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
             font-size: 1.2em;
-            margin-top: 10px;
-            display: block;
+            margin-bottom: 10px;
         }
 
-        input[type="text"] {
-            font-size: 1.5em; /* Increased font size */
-            padding: 10px; /* Added padding */
-            width: 100%; /* Full width */
-            max-width: 400px; /* Optional maximum width */
-            margin-bottom: 20px; /* Space between fields */
+        .form-group input {
+            font-size: 1.2em;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            max-width: 400px;
         }
 
-        input[type="submit"] {
-            font-size: 1.5em; /* Increased font size */
-            padding: 10px 20px; /* Added padding */
-            background-color: #4CAF50; /* Green background */
-            color: white; /* White text */
-            border: none; /* No border */
-            cursor: pointer; /* Pointer cursor on hover */
-            margin-top: 30px; /* Increased space above button */
+        .submit-btn {
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049; /* Darker green on hover */
+        .submit-btn:hover {
+            background-color: #218838; /* Darker green */
         }
     </style>
 </head>
 <body>
-    <h1>Enter Training and Test Run Lists</h1>
-    <form action="/result" method="post">
-        <label for="training_run_list">Training Run List:</label>
-        <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765">
-        
-        <label for="test_run_list">Test Run List:</label>
-        <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767">
-        
-        <input type="submit" value="Submit">
-    </form>
+    <header>
+        <div>
+            <img src="{{ url_for('static', filename='cms_logo.png') }}" alt="CMS Logo">
+        </div>
+        <button class="help-btn">Help</button>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="button-group">
+                <div>
+                    <h3>Select Option 1</h3>
+                    <button>Latest</button>
+                </div>
+                <div>
+                    <h3>Select Option 2</h3>
+                    <button>50</button>
+                </div>
+                <div>
+                    <h3>Select Option 3</h3>
+                    <button>Search Query</button>
+                </div>
+            </div>
+
+            <form action="/result" method="post">
+                <div class="form-group">
+                    <label for="training_run_list">Training Run List:</label>
+                    <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765">
+                </div>
+                <div class="form-group">
+                    <label for="test_run_list">Test Run List:</label>
+                    <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767">
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>
+
