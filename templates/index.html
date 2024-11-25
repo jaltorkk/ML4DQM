@@ -53,30 +53,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
 
-        .button-group {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-
-        .button-group div {
-            text-align: center;
-        }
-
-        .button-group button {
-            background-color: #6c757d; /* Bootstrap secondary color */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-
-        .button-group button:hover {
-            background-color: #5a6268; /* Darker gray on hover */
-        }
-
         .form-group {
             display: flex;
             flex-direction: column;
@@ -120,21 +96,6 @@
 
     <main>
         <div class="form-container">
-            <div class="button-group">
-                <div>
-                    <h3>Select Option 1</h3>
-                    <button>Latest</button>
-                </div>
-                <div>
-                    <h3>Select Option 2</h3>
-                    <button>50</button>
-                </div>
-                <div>
-                    <h3>Select Option 3</h3>
-                    <button>Search Query</button>
-                </div>
-            </div>
-
             <form action="/result" method="post">
                 <div class="form-group">
                     <label for="training_run_list">Training Run List:</label>
@@ -150,4 +111,3 @@
     </main>
 </body>
 </html>
-
