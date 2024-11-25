@@ -59,6 +59,9 @@ def result():
     run_analysis(training_run_list_str, test_run_list_str)
     images = os.listdir('static')
 
+    # Filter out CMS logo
+    images = [img for img in os.listdir('static') if img.lower() not in ['cms_logo.png']]  
+
     return render_template('result.html', 
                            training_runs=training_runs,
                            test_runs=test_runs,
