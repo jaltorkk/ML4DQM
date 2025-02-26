@@ -5,7 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Run Processing</title>
     <style>
-        /* Your existing CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa; /* Light background for modern look */
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #343a40; /* Dark header background */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        header img {
+            height: 50px; /* Logo size */
+        }
+
+        header .help-btn {
+            background-color: #007bff; /* Bootstrap-like primary color */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        header .help-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        main {
+            margin-top: 20px;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .form-group input,
+        .form-group select {
+            font-size: 1.2em;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            max-width: 400px;
+        }
+
+        .submit-btn {
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838; /* Darker green */
+        }
     </style>
 </head>
 <body>
@@ -19,6 +98,15 @@
     <main>
         <div class="form-container">
             <form action="/result" method="post">
+                <!-- Monitor Element dropdown comes first -->
+                <div class="form-group">
+                    <label for="monitor_element">Monitor Element:</label>
+                    <select id="monitor_element" name="monitor_element">
+                        <option value="met">MET</option>
+                        <option value="phieta">Phi vs Eta</option>
+                    </select>
+                </div>
+
                 <!-- Existing training and test run list form fields -->
                 <div class="form-group">
                     <label for="training_run_list">Training Run List:</label>
@@ -27,15 +115,6 @@
                 <div class="form-group">
                     <label for="test_run_list">Test Run List:</label>
                     <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767">
-                </div>
-
-                <!-- New Monitor Element section -->
-                <div class="form-group">
-                    <label for="monitor_element">Monitor Element:</label>
-                    <select id="monitor_element" name="monitor_element">
-                        <option value="met">MET</option>
-                        <option value="phieta">Phi vs Eta</option>
-                    </select>
                 </div>
 
                 <button type="submit" class="submit-btn">Submit</button>
