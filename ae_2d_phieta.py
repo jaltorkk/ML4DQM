@@ -13,6 +13,9 @@ from sklearn.metrics import roc_curve, auc, roc_auc_score
 from ROOT import TCanvas, TFile, TProfile, TNtuple, TH1F, TH2F, TLegend, TLine, TGraph, TLatex
 from sklearn.neural_network import MLPRegressor
 import run_locations
+import uuid
+import os
+
 
 def load_data(training_run_list, test_run_list,training_run_list_str, test_run_list_str):
     training_runs = []
@@ -112,7 +115,12 @@ def train_autoencoder(training_list):
     return reg
 
 def generate_loss_maps(reg, training_list, test_list, output_folder, training_runs, test_runs):
-    os.makedirs(output_folder, exist_ok=True)
+    # Create a unique session ID for the user
+    session_id = str(uuid.uuid4())  # Generates a unique identifier for the session
+
+    # Create a unique output folder for this session
+    user_output_folder = os.path.join(output_folder, session_id)
+    os.makedirs(user_output_folder, exist_ok=True)  # Ensure the folder exists
 
     x_pred_train = reg.predict(training_list)
     loss_map_train = (training_list - x_pred_train) ** 2
@@ -136,7 +144,9 @@ def generate_loss_maps(reg, training_list, test_list, output_folder, training_ru
         hist_phieta_tr3.SetStats(0)
         max_z = (np.max(loss_map_train) + (np.max(loss_map_train) / 3))
         hist_phieta_tr3.GetZaxis().SetRangeUser(0, max_z)
-        file_name_tr3 = os.path.join(output_folder, f'phieta_train_lossmap_{training_runs[idx]}.png')
+
+        # Save image with unique filename using UUID
+        file_name_tr3 = os.path.join(user_output_folder, f'phieta_train_lossmap_{training_runs[idx]}_{session_id}.png')
         c_phieta_tr3.SaveAs(file_name_tr3)
 
     for idx in range(len(test_list)):
@@ -156,7 +166,9 @@ def generate_loss_maps(reg, training_list, test_list, output_folder, training_ru
         hist_phieta_te3.SetStats(0)
         max_z = (np.max(loss_map_train) + (np.max(loss_map_train) / 3))
         hist_phieta_te3.GetZaxis().SetRangeUser(0, max_z)
-        file_name_te3 = os.path.join(output_folder, f'phieta_test_lossmap_{test_runs[idx]}.png')
+
+        # Save image with unique filename using UUID
+        file_name_te3 = os.path.join(user_output_folder, f'phieta_test_lossmap_{test_runs[idx]}_{session_id}.png')
         c_phieta_te3.SaveAs(file_name_te3)
 
 def run_analysis(training_run_list_str, test_run_list_str):
