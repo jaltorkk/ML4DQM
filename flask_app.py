@@ -5,17 +5,21 @@ import numpy as np
 from ae_2d_phieta import *  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
 import run_locations
+import uuid
+import time
 
-def clear_static_folder():
-    folder = 'static'
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            # Check if the file is a PNG before deleting
-            if filename.endswith('.png') and os.path.isfile(file_path):
-                os.unlink(file_path)  # Remove the file
-        except Exception as e:
-            print(f"Failed to delete {file_path}. Reason: {e}")
+def clear_old_folders(folder='static', max_age_seconds=3600):
+    now = time.time()
+    for item in os.listdir(folder):
+        path = os.path.join(folder, item)
+        if os.path.isdir(path):
+            creation_time = os.path.getctime(path)
+            if now - creation_time > max_age_seconds:
+                try:
+                    shutil.rmtree(path)
+                    print(f"Deleted old folder: {path}")
+                except Exception as e:
+                    print(f"Failed to delete {path}. Reason: {e}")
 
 app = Flask(__name__)
 
@@ -26,8 +30,13 @@ def index():
 @app.route('/result', methods=['POST'])
 def result():
     # Clear existing PNG files in the 'static' folder before generating new ones
-    clear_static_folder()
-    
+    clear_old_folders()
+
+    # Generate unique session ID and folder
+    session_id = str(uuid.uuid4())
+    session_folder = os.path.join('static', session_id)
+    os.makedirs(session_folder, exist_ok=True)
+
     training_run_list = request.form['training_run_list']
     test_run_list = request.form['test_run_list']
 
@@ -56,11 +65,17 @@ def result():
     training_runs, test_runs = run_locations.process_runs(training_run_list_str, test_run_list_str)
 
     # Collect results (assuming they are generated in the 'static' folder)
-    run_analysis(training_run_list_str, test_run_list_str)
+    run_analysis(training_run_list_str, test_run_list_str, output_dir=session_folder)
     images = os.listdir('static')
 
     # Filter out CMS logo
-    images = [img for img in os.listdir('static') if img.lower() not in ['cms_logo.png', 'cms_logo.jpg']]  
+    images = [img for img in os.listdir('static') if img.lower() not in ['cms_logo.png', 'cms_logo.jpg']] 
+
+    # Collect image paths relative to 'static/'
+    images = [
+        f"{session_id}/{img}" for img in os.listdir(session_folder)
+        if img.lower().endswith(('.png', '.jpg', '.jpeg')) and 'cms_logo' not in img.lower()
+    ]
 
     return render_template('result.html', 
                            training_runs=training_runs,
