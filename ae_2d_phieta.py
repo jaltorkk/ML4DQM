@@ -115,7 +115,7 @@ def train_autoencoder(training_list):
     return reg
 
 def generate_loss_maps(reg, training_list, test_list, output_folder, training_runs, test_runs):
-    # No need for session ID here anymore
+    # Removed UUID logic here, we just need the folder path to save the images.
     os.makedirs(output_folder, exist_ok=True)
 
     x_pred_train = reg.predict(training_list)
@@ -141,6 +141,7 @@ def generate_loss_maps(reg, training_list, test_list, output_folder, training_ru
         max_z = (np.max(loss_map_train) + (np.max(loss_map_train) / 3))
         hist_phieta_tr3.GetZaxis().SetRangeUser(0, max_z)
 
+        # Save the image to the output folder passed from Flask (session-specific folder)
         file_name_tr3 = os.path.join(output_folder, f'phieta_train_lossmap_{training_runs[idx]}.png')
         c_phieta_tr3.SaveAs(file_name_tr3)
 
@@ -162,8 +163,10 @@ def generate_loss_maps(reg, training_list, test_list, output_folder, training_ru
         max_z = (np.max(loss_map_train) + (np.max(loss_map_train) / 3))
         hist_phieta_te3.GetZaxis().SetRangeUser(0, max_z)
 
+        # Save the image to the output folder passed from Flask (session-specific folder)
         file_name_te3 = os.path.join(output_folder, f'phieta_test_lossmap_{test_runs[idx]}.png')
         c_phieta_te3.SaveAs(file_name_te3)
+
 
 
     for idx in range(len(test_list)):
