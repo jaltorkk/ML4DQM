@@ -166,30 +166,7 @@ def generate_loss_maps(reg, training_list, test_list, output_folder, training_ru
         # Save the image to the output folder passed from Flask (session-specific folder)
         file_name_te3 = os.path.join(output_folder, f'phieta_test_lossmap_{test_runs[idx]}.png')
         c_phieta_te3.SaveAs(file_name_te3)
-
-
-
-    for idx in range(len(test_list)):
-        hist_name_te3 = f"hist_phieta_te3_{idx}"
-        canv_name_te3 = f"c_phieta_te3_{idx}"
-        hist_phieta_te3 = TH2F(hist_name_te3, hist_name_te3, 50, -5, 5, 24, -3, 3)
-        for i in range(24):
-            phi = -3.125 + (0.25 * (i + 1))
-            for j in range(50):
-                eta = -5.1 + (0.2 * (j + 1))
-                hist_phieta_te3.Fill(eta, phi, loss_map_test[idx][i * 50 + j])
-        c_phieta_te3 = TCanvas(canv_name_te3, canv_name_te3, 200, 10, 700, 500)
-        hist_phieta_te3.SetTitle(f"Test Run {test_runs[idx]} (Loss Map) ; #eta ; #phi ")
-        gStyle.SetPalette(55)
-        c_phieta_te3.Draw()
-        hist_phieta_te3.Draw("colz")
-        hist_phieta_te3.SetStats(0)
-        max_z = (np.max(loss_map_train) + (np.max(loss_map_train) / 3))
-        hist_phieta_te3.GetZaxis().SetRangeUser(0, max_z)
-
-        # Save image with unique filename using UUID
-        file_name_te3 = os.path.join(user_output_folder, f'phieta_test_lossmap_{test_runs[idx]}_{session_id}.png')
-        c_phieta_te3.SaveAs(file_name_te3)
+        
 
 def run_analysis(training_run_list_str, test_run_list_str, output_dir='static'):
     training_run_list, test_run_list = run_locations.process_runs(training_run_list_str, test_run_list_str)
