@@ -6,8 +6,8 @@ tensorflow >= 2.6.0
 pandas >= 1.1.4
 scikit-learn >= 0.24.2
 gunicorn==20.1.0
-celery
-redis
+Celery==5.2.3
+redis==4.0.2
 
 
 
