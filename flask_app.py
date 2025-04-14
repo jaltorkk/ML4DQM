@@ -1,13 +1,32 @@
 import shutil
-from flask import Flask, render_template, request
 import os
+import uuid
+import time
+from flask import Flask, render_template, request
+from celery import Celery  # Import Celery
 import numpy as np
 from ae_2d_phieta import *  # Import the process_runs function
 from run_conditions import train_run_2023, test_run_2023
 import run_locations
-import uuid
-import time
 
+# Set up Flask app
+app = Flask(__name__)
+
+# Set up Celery
+def make_celery(app):
+    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'], broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    return celery
+
+# Celery config for Redis
+app.config.update(
+    CELERY_BROKER_URL='redis://localhost:6379/0',  # Example: using Redis as the broker
+    CELERY_RESULT_BACKEND='redis://localhost:6379/0',  # Store results in Redis
+)
+
+celery = make_celery(app)  # Initialize Celery with the Flask app
+
+# Helper function to clear old folders
 def clear_old_folders(folder='static', max_age_seconds=3600):
     now = time.time()
     for item in os.listdir(folder):
@@ -21,7 +40,18 @@ def clear_old_folders(folder='static', max_age_seconds=3600):
                 except Exception as e:
                     print(f"Failed to delete {path}. Reason: {e}")
 
-app = Flask(__name__)
+# Define the Celery task
+@celery.task
+def process_runs_async(training_run_list_str, test_run_list_str, session_folder):
+    # Process the runs asynchronously
+    training_runs, test_runs = run_locations.process_runs(training_run_list_str, test_run_list_str)
+    run_analysis(training_run_list_str, test_run_list_str, output_dir=session_folder)
+
+    # Filter out CMS logo
+    images = [img for img in os.listdir(session_folder) if img.lower() not in ['cms_logo.png', 'cms_logo.jpg']]
+    images = [f"{session_folder}/{img}" for img in images if img.lower().endswith(('.png', '.jpg', '.jpeg'))]
+
+    return training_runs, test_runs, images
 
 @app.route('/')
 def index():
@@ -61,31 +91,24 @@ def result():
     training_run_list_str = ','.join(valid_training_runs)
     test_run_list_str = ','.join(valid_test_runs)
 
-    # Process the runs using process_runs function
-    training_runs, test_runs = run_locations.process_runs(training_run_list_str, test_run_list_str)
+    # Call the Celery task asynchronously
+    task = process_runs_async.apply_async(args=[training_run_list_str, test_run_list_str, session_folder])
 
-    # Collect results (assuming they are generated in the 'static' folder)
-    run_analysis(training_run_list_str, test_run_list_str, output_dir=session_folder)
-    images = os.listdir('static')
+    # You can return a task ID or a page indicating the task is in progress
+    return render_template('task_in_progress.html', task_id=task.id)
 
-    # Filter out CMS logo
-    images = [img for img in os.listdir('static') if img.lower() not in ['cms_logo.png', 'cms_logo.jpg']] 
+@app.route('/task_status/<task_id>')
+def task_status(task_id):
+    task = process_runs_async.AsyncResult(task_id)
 
-    # Collect image paths relative to 'static/'
-    images = [
-        f"{session_id}/{img}" for img in os.listdir(session_folder)
-        if img.lower().endswith(('.png', '.jpg', '.jpeg')) and 'cms_logo' not in img.lower()
-    ]
-
-    return render_template('result.html', 
-                           training_runs=training_runs,
-                           test_runs=test_runs,
-                           images=images,
-                           warnings=all_warnings)
+    # Check task status and display the result when done
+    if task.state == 'SUCCESS':
+        training_runs, test_runs, images = task.result
+        return render_template('result.html', training_runs=training_runs, test_runs=test_runs, images=images)
+    elif task.state == 'PENDING':
+        return f"Task {task_id} is pending. Please wait..."
+    else:
+        return f"Task {task_id} failed with state {task.state}"
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8001)
-
-
-
-
