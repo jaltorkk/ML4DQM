@@ -1,7 +1,7 @@
 # Use a Python 3.6 slim base image
 FROM python:3.6-slim
 
-# Install dependencies for Conda, ROOT, and Redis
+# Update package list and install dependencies for Conda, ROOT, and Redis
 RUN apt-get update && apt-get install -y \
     wget \
     bzip2 \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
-    redis-server \  # Install Redis server
+    redis-server \
     redis-tools \   # Install Redis client tools (redis-cli)
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -64,4 +64,3 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Start the processes with supervisor
 CMD ["/usr/bin/supervisord"]
-
