@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
+    redis-server \  # Install Redis client
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -54,8 +55,8 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-#ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
-#CMD ["flask_app.py"]
+# ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
+# CMD ["flask_app.py"]
 
 # Use gunicorn in the entrypoint directly
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
@@ -63,4 +64,7 @@ ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
 # CMD passes arguments to gunicorn
 CMD ["--config", "gunicorn_config.py", "flask_app:app"]
 
-#CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8001", "--timeout", "300", "flask_app:app"]
+# Add Celery Worker
+# Add this line to run the Celery worker as part of the process in the container
+CMD ["conda", "run", "--no-capture-output", "-n", "myenv", "celery", "-A", "flask_app.celery", "worker", "--loglevel=info"]
+
