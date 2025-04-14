@@ -10,6 +10,12 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
+    gnupg2 \
+    curl \
+    && curl -fsSL https://packages.redis.io/gpg | tee /etc/apt/trusted.gpg.d/redis.asc \
+    && echo "deb https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list \
+    && apt-get update \
+    && apt-get install -y redis-server redis-tools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -47,19 +53,10 @@ COPY . .
 RUN chgrp -R 0 /application/static && \
     chmod -R g=u /application/static
 
-# Environment variables
-ENV PYTHONUNBUFFERED 1
-
-# Expose port 8001 to allow communication to/from the server
+# Expose port 8001
 EXPOSE 8001
-STOPSIGNAL SIGINT
 
-#ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
-#CMD ["flask_app.py"]
-
-# Use gunicorn in the entrypoint directly
+# Use gunicorn to serve the app
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
-
-# CMD passes arguments to gunicorn
 CMD ["--config", "gunicorn_config.py", "flask_app:app"]
 
