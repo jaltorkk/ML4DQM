@@ -2,65 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Processing Results</title>
+    <title>Run Results</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f8f9fa;
+            font-size: 1.1em;
         }
 
-        h2 {
-            font-size: 1.5em; /* Set the same size for headers */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #343a40;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+        }
+
+        header img {
+            height: 60px;
+        }
+
+        header .help-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        header .help-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
             margin-top: 20px;
         }
 
-        p {
-            font-size: 1.2em; /* Set font size for paragraphs */
-            margin-bottom: 20px; /* Space below paragraphs */
+        .runs {
+            margin-bottom: 20px;
         }
 
-        ul {
-            list-style-type: none; /* Remove bullets from list */
-            padding: 0; /* Remove padding */
+        .runs p {
+            margin: 8px 0;
+            font-weight: bold;
         }
 
-        li {
-            font-size: 1.2em; /* Font size for list items */
-            margin-bottom: 10px; /* Space between list items */
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
         }
 
-        img {
-            max-width: 100%; /* Ensure image fits within the container */
-            height: auto; /* Maintain aspect ratio */
+        .images-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .images-row img {
+            max-width: 48%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .other-content {
+            /* Style any other content here */
         }
     </style>
 </head>
 <body>
-    <h2>Training Runs</h2>
-    <p>{{ training_runs }}</p>
+    <header>
+        <div>
+            <img src="{{ url_for('static', filename='cms_logo.jpg') }}" alt="CMS Logo">
+        </div>
+        <button class="help-btn">Help</button>
+    </header>
 
-    <h2>Test Runs</h2>
-    <p>{{ test_runs }}</p>
+    <main class="content">
+        <div class="runs">
+            <p>Training Runs: {{ training_runs }}</p>
+            <p>Test Runs: {{ test_runs }}</p>
+        </div>
 
-    {% if warnings %}
-        <h2>Warnings</h2>
-        <ul>
+        {% if warnings %}
+        <div class="warning-box">
             {% for warning in warnings %}
-                <li>{{ warning }}</li>
+                <p>{{ warning }}</p>
             {% endfor %}
-        </ul>
-    {% endif %}
+        </div>
+        {% endif %}
 
-    <h2>Generated Loss Maps</h2>
-    <ul>
-        {% for image in images %}
-            {% if image.endswith('.png') or image.endswith('.jpg') or image.endswith('.jpeg') %}
-                <li><img src="{{ url_for('static', filename=image) }}" alt="{{ image }}"></li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+        <div class="images-row">
+            {% for image in images %}
+                <img src="{{ url_for('static', filename=image) }}" alt="Loss Map">
+            {% endfor %}
+        </div>
 
+        <div class="other-content">
+            <!-- Any remaining elements go here -->
+        </div>
+    </main>
 </body>
 </html>
+
 
 
