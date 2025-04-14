@@ -1,7 +1,7 @@
 # Use a Python 3.6 slim base image
 FROM python:3.6-slim
 
-# Install dependencies for Conda and ROOT
+# Install dependencies for Conda, ROOT, and Redis
 RUN apt-get update && apt-get install -y \
     wget \
     bzip2 \
@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
-    redis-server \  # Install Redis client
+    redis-server \  # Install Redis server
+    redis-tools \   # Install Redis client tools (redis-cli)
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -55,16 +56,12 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8001
 STOPSIGNAL SIGINT
 
-# ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "python"]
-# CMD ["flask_app.py"]
+# Install supervisor to manage both Gunicorn and Celery processes
+RUN apt-get update && apt-get install -y supervisor
 
-# Use gunicorn in the entrypoint directly
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
+# Copy supervisor configuration
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# CMD passes arguments to gunicorn
-CMD ["--config", "gunicorn_config.py", "flask_app:app"]
-
-# Add Celery Worker
-# Add this line to run the Celery worker as part of the process in the container
-CMD ["conda", "run", "--no-capture-output", "-n", "myenv", "celery", "-A", "flask_app.celery", "worker", "--loglevel=info"]
+# Start the processes with supervisor
+CMD ["/usr/bin/supervisord"]
 
