@@ -1,7 +1,7 @@
-# Use a Python 3.6 slim base image
-FROM python:3.6-slim
+# Use a Python 3.6 full base image
+FROM python:3.6
 
-# Install dependencies for Conda and ROOT
+# Install Redis and other dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     bzip2 \
@@ -10,12 +10,7 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libsm6 \
     libxrender1 \
-    gnupg2 \
-    curl \
-    && curl -fsSL https://packages.redis.io/gpg | tee /etc/apt/trusted.gpg.d/redis.asc \
-    && echo "deb https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list \
-    && apt-get update \
-    && apt-get install -y redis-server redis-tools \
+    redis-server redis-tools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -59,4 +54,3 @@ EXPOSE 8001
 # Use gunicorn to serve the app
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "gunicorn"]
 CMD ["--config", "gunicorn_config.py", "flask_app:app"]
-
