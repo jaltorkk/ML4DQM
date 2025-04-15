@@ -9,24 +9,16 @@
       font-family: Arial, sans-serif;
       margin: 0;
       background-color: #f8f9fa;
-      font-size: 1.6em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-size: 1.4em;
     }
 
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       background-color: #343a40;
       color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 1000px;
-      box-sizing: border-box;
-      margin-top: 20px;
+      padding: 20px 40px;
     }
 
     header img {
@@ -37,24 +29,28 @@
       background-color: #007bff;
       color: white;
       padding: 12px 24px;
-      font-size: 1.4em;
+      font-size: 1.2em;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
 
     main {
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .results-container {
       background-color: white;
-      margin-top: 30px;
       padding: 40px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 100%;
       max-width: 1000px;
-      box-sizing: border-box;
+      width: 100%;
     }
 
-    .runs, .warnings {
+    .runs {
       margin-bottom: 30px;
     }
 
@@ -64,28 +60,22 @@
       padding: 20px;
       border: 1px solid #ffeeba;
       border-radius: 10px;
+      margin-bottom: 30px;
     }
 
     .images {
       display: flex;
+      flex-wrap: wrap;
       gap: 30px;
       justify-content: center;
-      margin-top: 40px;
-      flex-wrap: wrap;
     }
 
     .images img {
-      width: 100%;
-      max-width: 450px;
+      max-width: 100%;
+      width: 48%;
       border: 1px solid #ccc;
       border-radius: 12px;
     }
-
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-    }
-
   </style>
 </head>
 <body>
@@ -95,31 +85,30 @@
   </header>
 
   <main>
-    <div class="runs">
-      <div><strong>Training Runs:</strong> {{ training_runs | join(', ') }}</div>
-      <div><strong>Test Runs:</strong> {{ test_runs | join(', ') }}</div>
-    </div>
+    <div class="results-container">
+      <div class="runs">
+        <div><strong>Training Runs:</strong> {{ training_runs | join(', ') }}</div>
+        <div><strong>Test Runs:</strong> {{ test_runs | join(', ') }}</div>
+      </div>
 
-    {% if warnings %}
-    <div class="warnings">
-      {% for warning in warnings %}
-        <div>{{ warning.replace("Warning: ", "") }}</div>
-      {% endfor %}
-    </div>
-    {% endif %}
+      {% if warnings %}
+        <div class="warnings">
+          {% for warning in warnings %}
+            <div>{{ warning.replace("Warning: ", "") }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
 
-    <div class="images">
-      {% for image in images %}
-        <img src="{{ url_for('static', filename=image) }}" alt="Loss Map">
-      {% endfor %}
-    </div>
-
-    <div class="footer">
-      <!-- You can add additional info here -->
+      <div class="images">
+        {% for image in images %}
+          <img src="{{ url_for('static', filename=image) }}" alt="Loss Map">
+        {% endfor %}
+      </div>
     </div>
   </main>
 </body>
 </html>
+
 
 
 
