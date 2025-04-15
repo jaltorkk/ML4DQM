@@ -7,9 +7,14 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 30px;
+      margin: 0;
       background-color: #f8f9fa;
       font-size: 1.6em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
     }
 
     header {
@@ -20,6 +25,9 @@
       color: white;
       padding: 20px;
       border-radius: 10px;
+      width: 100%;
+      max-width: 900px;
+      box-sizing: border-box;
     }
 
     header img {
@@ -36,57 +44,57 @@
       cursor: pointer;
     }
 
-    .help-btn:hover {
-      background-color: #0056b3;
-    }
-
-    main {
-      margin-top: 40px;
-    }
-
     .form-container {
       background-color: white;
       padding: 40px;
+      margin-top: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 900px;
+      box-sizing: border-box;
     }
 
     .form-group {
-      margin-bottom: 40px;
+      margin-bottom: 35px;
     }
 
     .form-group label {
       font-size: 1.6em;
-      margin-bottom: 15px;
       display: block;
+      margin-bottom: 12px;
     }
 
-    .form-group input,
-    .form-group select {
+    .input-with-dropdown {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .input-with-dropdown input {
       font-size: 1.6em;
       padding: 14px;
-      width: 100%;
-      max-width: 600px;
+      flex: 2;
       border: 1px solid #ced4da;
       border-radius: 8px;
     }
 
-    .tabs-container {
-      margin-top: 10px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 15px;
-      margin-top: 10px;
-    }
-
-    .tab {
-      padding: 10px 20px;
-      background-color: #dee2e6;
-      border-radius: 8px;
-      cursor: pointer;
+    .input-with-dropdown select {
       font-size: 1.4em;
+      padding: 14px;
+      flex: 1;
+      border-radius: 8px;
+      border: 1px solid #ced4da;
+      background-color: #e9ecef;
+    }
+
+    select option {
+      font-size: 1em;
+    }
+
+    .form-group select,
+    .form-group input {
+      max-width: 100%;
     }
 
     .submit-btn {
@@ -97,7 +105,9 @@
       border-radius: 10px;
       cursor: pointer;
       font-size: 1.6em;
-      margin-top: 40px;
+      display: block;
+      margin: auto;
+      margin-top: 30px;
     }
 
     .submit-btn:hover {
@@ -111,51 +121,48 @@
     <button class="help-btn">Help</button>
   </header>
 
-  <main>
-    <div class="form-container">
-      <form action="/result" method="post">
-        <!-- Monitor Element -->
-        <div class="form-group">
-          <label for="monitor_element">Monitor Element:</label>
-          <select id="monitor_element" name="monitor_element">
-            <option value="phieta">Phi vs Eta</option>
-            <option value="phieta">Hadron Occupancy</option>
-            <option value="met">MET</option>  
+  <div class="form-container">
+    <form action="/result" method="post">
+      <!-- Monitor Element -->
+      <div class="form-group">
+        <label for="monitor_element">Monitor Element:</label>
+        <select id="monitor_element" name="monitor_element">
+          <option value="met">MET</option>
+          <option value="phieta">Phi vs Eta</option>
+        </select>
+      </div>
+
+      <!-- Training Run List -->
+      <div class="form-group">
+        <label for="training_run_list">Training Run List:</label>
+        <div class="input-with-dropdown">
+          <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765" />
+          <select name="training_call">
+            <option value="">2025 Calls</option>
+            <option value="call1">Call 1</option>
+            <option value="call2">Call 2</option>
+            <option value="call3">Call 3</option>
           </select>
         </div>
+      </div>
 
-        <!-- Training Run List -->
-        <div class="form-group">
-          <label for="training_run_list">Training Run List:</label>
-          <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765" />
-          <div class="tabs-container">
-            <label>2025 Calls:</label>
-            <div class="tabs">
-              <div class="tab">Call 1</div>
-              <div class="tab">Call 2</div>
-              <div class="tab">Call 3</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Test Run List -->
-        <div class="form-group">
-          <label for="test_run_list">Test Run List:</label>
+      <!-- Test Run List -->
+      <div class="form-group">
+        <label for="test_run_list">Test Run List:</label>
+        <div class="input-with-dropdown">
           <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767" />
-          <div class="tabs-container">
-            <label>2025 Calls:</label>
-            <div class="tabs">
-              <div class="tab">Call 1</div>
-              <div class="tab">Call 2</div>
-              <div class="tab">Call 3</div>
-            </div>
-          </div>
+          <select name="test_call">
+            <option value="">2025 Calls</option>
+            <option value="call1">Call 1</option>
+            <option value="call2">Call 2</option>
+            <option value="call3">Call 3</option>
+          </select>
         </div>
+      </div>
 
-        <button type="submit" class="submit-btn">Submit</button>
-      </form>
-    </div>
-  </main>
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
 </body>
 </html>
 
