@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       background-color: #f8f9fa;
-      font-size: 1.4em;
+      font-size: 1.6em; /* Increased base font size */
     }
 
     header {
@@ -18,54 +18,59 @@
       align-items: center;
       background-color: #343a40;
       color: white;
-      padding: 20px 40px;
+      padding: 30px 60px; /* Increased padding */
+      box-sizing: border-box;
     }
 
     header img {
-      height: 70px;
+      height: 90px; /* Increased logo size */
     }
 
     .help-btn {
       background-color: #007bff;
       color: white;
-      padding: 12px 24px;
-      font-size: 1.2em;
+      padding: 15px 30px; /* Increased button padding */
+      font-size: 1.6em; /* Increased font size */
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
+    }
+
+    .help-btn:hover {
+      background-color: #0056b3;
     }
 
     main {
       display: flex;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 60px 20px;
     }
 
     .form-container {
       background-color: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
+      padding: 50px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      max-width: 800px; /* Increased max-width */
       width: 100%;
     }
 
     .form-group {
-      margin-bottom: 30px;
+      margin-bottom: 40px; /* More spacing between groups */
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
+      margin-bottom: 20px; /* Increased space */
+      font-size: 1.8em; /* Increased label font size */
     }
 
     select,
     input[type="text"] {
-      font-size: 1.2em;
-      padding: 14px;
+      font-size: 1.6em; /* Increased input font size */
+      padding: 18px; /* Increased input padding */
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
       width: 100%;
       max-width: 100%;
     }
@@ -84,19 +89,21 @@
     .input-with-dropdown select {
       flex: 2;
       background-color: #e9ecef;
+      padding: 14px;
+      font-size: 1.6em; /* Increased font size for dropdown */
     }
 
     .submit-btn {
       background-color: #28a745;
       color: white;
-      padding: 16px 32px;
-      font-size: 1.4em;
+      padding: 18px 36px; /* Increased button padding */
+      font-size: 1.8em; /* Increased font size */
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       display: block;
       margin: auto;
-      margin-top: 30px;
+      margin-top: 50px;
     }
 
     .submit-btn:hover {
@@ -124,35 +131,5 @@
 
         <!-- Training Run List -->
         <div class="form-group">
-          <label for="training_run_list">Training Run List:</label>
-          <div class="input-with-dropdown">
-            <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765" />
-            <select name="training_call">
-              <option value="">2025 Calls</option>
-              <option value="call1">Call 1</option>
-              <option value="call2">Call 2</option>
-              <option value="call3">Call 3</option>
-            </select>
-          </div>
-        </div>
+          <label for="training_run_list">Training Run List:</label
 
-        <!-- Test Run List -->
-        <div class="form-group">
-          <label for="test_run_list">Test Run List:</label>
-          <div class="input-with-dropdown">
-            <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767" />
-            <select name="test_call">
-              <option value="">2025 Calls</option>
-              <option value="call1">Call 1</option>
-              <option value="call2">Call 2</option>
-              <option value="call3">Call 3</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="submit" class="submit-btn">Submit</button>
-      </form>
-    </div>
-  </main>
-</body>
-</html>
