@@ -1,196 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Run Processing</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f8f9fa;
-            font-size: 1.2em;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Run Processing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f8f9fa;
+      font-size: 1.6em;
+    }
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #343a40;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-        }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #343a40;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
 
-        header img {
-            height: 60px;
-        }
+    header img {
+      height: 70px;
+    }
 
-        header .help-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1em;
-        }
+    .help-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1.4em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-        header .help-btn:hover {
-            background-color: #0056b3;
-        }
+    .help-btn:hover {
+      background-color: #0056b3;
+    }
 
-        main {
-            margin-top: 30px;
-        }
+    main {
+      margin-top: 40px;
+    }
 
-        .form-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 700px;
-            margin: 0 auto;
-        }
+    .form-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-        .form-group {
-            margin-bottom: 30px;
-        }
+    .form-group {
+      margin-bottom: 40px;
+    }
 
-        .form-group label {
-            font-size: 1.3em;
-            display: block;
-            margin-bottom: 12px;
-        }
+    .form-group label {
+      font-size: 1.6em;
+      margin-bottom: 15px;
+      display: block;
+    }
 
-        .form-group select,
-        .form-group input {
-            font-size: 1.2em;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            width: 60%;
-        }
+    .form-group input,
+    .form-group select {
+      font-size: 1.6em;
+      padding: 14px;
+      width: 100%;
+      max-width: 600px;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+    }
 
-        .input-with-dropdown {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .tabs-container {
+      margin-top: 10px;
+    }
 
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+    .tabs {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
 
-        .dropdown-btn {
-            background-color: #6c757d;
-            color: white;
-            padding: 10px 14px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .tab {
+      padding: 10px 20px;
+      background-color: #dee2e6;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.4em;
+    }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            z-index: 1;
-            border-radius: 5px;
-            overflow: hidden;
-        }
+    .submit-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 16px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.6em;
+      margin-top: 40px;
+    }
 
-        .dropdown-content a {
-            padding: 12px 16px;
-            display: block;
-            color: #333;
-            text-decoration: none;
-            font-size: 1em;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .submit-btn {
-            background-color: #28a745;
-            color: white;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-
-        .submit-btn:hover {
-            background-color: #218838;
-        }
-    </style>
+    .submit-btn:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div>
-            <img src="{{ url_for('static', filename='cms_logo.jpg') }}" alt="CMS Logo">
+  <header>
+    <img src="{{ url_for('static', filename='cms_logo.jpg') }}" alt="CMS Logo" />
+    <button class="help-btn">Help</button>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <form action="/result" method="post">
+        <!-- Monitor Element -->
+        <div class="form-group">
+          <label for="monitor_element">Monitor Element:</label>
+          <select id="monitor_element" name="monitor_element">
+            <option value="phieta">Phi vs Eta</option>
+            <option value="phieta">Hadron Occupancy</option>
+            <option value="met">MET</option>  
+          </select>
         </div>
-        <button class="help-btn">Help</button>
-    </header>
 
-    <main>
-        <div class="form-container">
-            <form action="/result" method="post">
-                <!-- Monitor Element -->
-                <div class="form-group">
-                    <label for="monitor_element">Monitor Element:</label>
-                    <select id="monitor_element" name="monitor_element">
-                        <option value="met">MET</option>
-                        <option value="phieta">Phi vs Eta</option>
-                    </select>
-                </div>
-
-                <!-- Training Run List -->
-                <div class="form-group">
-                    <label for="training_run_list">Training Run List:</label>
-                    <div class="input-with-dropdown">
-                        <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765">
-                        <div class="dropdown">
-                            <button class="dropdown-btn">2025 Calls</button>
-                            <div class="dropdown-content">
-                                <a href="#" onclick="document.getElementById('training_run_list').value='call_1'; return false;">Call 1</a>
-                                <a href="#" onclick="document.getElementById('training_run_list').value='call_2'; return false;">Call 2</a>
-                                <a href="#" onclick="document.getElementById('training_run_list').value='call_3'; return false;">Call 3</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Test Run List -->
-                <div class="form-group">
-                    <label for="test_run_list">Test Run List:</label>
-                    <div class="input-with-dropdown">
-                        <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767">
-                        <div class="dropdown">
-                            <button class="dropdown-btn">2025 Calls</button>
-                            <div class="dropdown-content">
-                                <a href="#" onclick="document.getElementById('test_run_list').value='call_1'; return false;">Call 1</a>
-                                <a href="#" onclick="document.getElementById('test_run_list').value='call_2'; return false;">Call 2</a>
-                                <a href="#" onclick="document.getElementById('test_run_list').value='call_3'; return false;">Call 3</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
+        <!-- Training Run List -->
+        <div class="form-group">
+          <label for="training_run_list">Training Run List:</label>
+          <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765" />
+          <div class="tabs-container">
+            <label>2025 Calls:</label>
+            <div class="tabs">
+              <div class="tab">Call 1</div>
+              <div class="tab">Call 2</div>
+              <div class="tab">Call 3</div>
+            </div>
+          </div>
         </div>
-    </main>
+
+        <!-- Test Run List -->
+        <div class="form-group">
+          <label for="test_run_list">Test Run List:</label>
+          <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767" />
+          <div class="tabs-container">
+            <label>2025 Calls:</label>
+            <div class="tabs">
+              <div class="tab">Call 1</div>
+              <div class="tab">Call 2</div>
+              <div class="tab">Call 3</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    </div>
+  </main>
 </body>
 </html>
+
 
