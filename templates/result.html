@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 30px;
       background-color: #f8f9fa;
-      font-size: 1.6em;
+      font-size: 1.4em; /* Slightly reduced font size for better fit */
     }
 
     header {
@@ -23,16 +23,16 @@
     }
 
     header img {
-      height: 70px;
+      height: 80px;
     }
 
     .help-btn {
       background-color: #007bff;
       color: white;
-      padding: 12px 24px;
+      padding: 14px 28px;
       font-size: 1.4em;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
     }
 
@@ -42,7 +42,7 @@
 
     .runs {
       margin-top: 30px;
-      font-size: 1.8em;
+      font-size: 1.6em;
     }
 
     .warning-box {
@@ -50,22 +50,22 @@
       background-color: #fff3cd;
       color: #856404;
       border: 2px solid #ffeeba;
-      padding: 25px;
+      padding: 20px;
       border-radius: 10px;
-      font-size: 1.6em;
+      font-size: 1.4em;
     }
 
     .images-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 40px;
+      gap: 30px;
       justify-content: center;
       margin-top: 50px;
     }
 
     .images-row > div {
-      flex: 1 1 100%;
-      max-width: 90vw;
+      flex: 1 1 48%;
+      max-width: 48%;
     }
 
     .images-row img {
@@ -75,10 +75,10 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    @media (min-width: 1200px) {
+    @media (max-width: 768px) {
       .images-row > div {
-        flex: 1 1 48%;
-        max-width: 48%;
+        flex: 1 1 100%;
+        max-width: 100%;
       }
     }
   </style>
@@ -96,7 +96,7 @@
 
   {% if warnings %}
     <div class="warning-box">
-      <strong>Warning:</strong> {{ warnings }}
+      {{ warnings[0] }}
     </div>
   {% endif %}
 
