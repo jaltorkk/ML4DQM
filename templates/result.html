@@ -1,120 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Run Results</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f8f9fa;
-            font-size: 1.2em; /* Larger base font */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f8f9fa;
+      font-size: 1.6em;
+    }
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #343a40;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-        }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #343a40;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
 
-        header img {
-            height: 60px;
-        }
+    header img {
+      height: 70px;
+    }
 
-        header .help-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
+    .help-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1.4em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-        header .help-btn:hover {
-            background-color: #0056b3;
-        }
+    .help-btn:hover {
+      background-color: #0056b3;
+    }
 
-        .content {
-            margin-top: 30px;
-        }
+    .runs {
+      margin-top: 30px;
+      font-size: 1.8em;
+    }
 
-        .runs {
-            margin-bottom: 30px;
-        }
+    .warning-box {
+      margin-top: 30px;
+      background-color: #fff3cd;
+      color: #856404;
+      border: 2px solid #ffeeba;
+      padding: 25px;
+      border-radius: 10px;
+      font-size: 1.6em;
+    }
 
-        .runs p {
-            margin: 12px 0;
-            font-weight: bold;
-            font-size: 1.4em;
-        }
+    .images-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      margin-top: 50px;
+    }
 
-        .warning-box {
-            background-color: #fff3cd;
-            border-left: 6px solid #ffc107;
-            color: #856404;
-            padding: 20px;
-            margin-bottom: 35px;
-            border-radius: 5px;
-            font-size: 1.3em;
-        }
+    .images-row > div {
+      flex: 1 1 100%;
+      max-width: 90vw;
+    }
 
-        .images-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 40px;
-            justify-content: center;
-        }
+    .images-row img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
 
-        .images-row img {
-            width: 45%;
-            max-width: 600px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        }
-
-        .other-content {
-            /* Additional content styling */
-        }
-    </style>
+    @media (min-width: 1200px) {
+      .images-row > div {
+        flex: 1 1 48%;
+        max-width: 48%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div>
-            <img src="{{ url_for('static', filename='cms_logo.jpg') }}" alt="CMS Logo">
-        </div>
-        <button class="help-btn">Help</button>
-    </header>
+  <header>
+    <img src="{{ url_for('static', filename='cms_logo.jpg') }}" alt="CMS Logo" />
+    <button class="help-btn">Help</button>
+  </header>
 
-    <main class="content">
-        <div class="runs">
-            <p>Training Runs: {{ ', '.join(training_runs) }}</p>
-            <p>Test Runs: {{ ', '.join(test_runs) }}</p>
-        </div>
+  <div class="runs">
+    <p><strong>Training Runs:</strong> {{ training_runs | join(', ') }}</p>
+    <p><strong>Test Runs:</strong> {{ test_runs | join(', ') }}</p>
+  </div>
 
-        {% if warnings %}
-        <div class="warning-box">
-            {% for warning in warnings %}
-                <p>{{ warning }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
+  {% if warnings %}
+    <div class="warning-box">
+      <strong>Warning:</strong> {{ warnings }}
+    </div>
+  {% endif %}
 
-        <div class="images-row">
-            {% for image in images %}
-                <img src="{{ url_for('static', filename=image) }}" alt="Loss Map">
-            {% endfor %}
-        </div>
-
-        <div class="other-content">
-            <!-- Any additional data -->
-        </div>
-    </main>
+  <div class="images-row">
+    {% for image in images %}
+      <div>
+        <img src="{{ url_for('static', filename=image) }}" alt="Loss Map">
+      </div>
+    {% endfor %}
+  </div>
 </body>
 </html>
 
