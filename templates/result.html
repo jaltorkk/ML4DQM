@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 30px;
       background-color: #f8f9fa;
-      font-size: 1.4em; /* Slightly reduced font size for better fit */
+      font-size: 1.6em;
     }
 
     header {
@@ -23,16 +23,16 @@
     }
 
     header img {
-      height: 80px;
+      height: 70px;
     }
 
     .help-btn {
       background-color: #007bff;
       color: white;
-      padding: 14px 28px;
+      padding: 12px 24px;
       font-size: 1.4em;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
@@ -42,7 +42,7 @@
 
     .runs {
       margin-top: 30px;
-      font-size: 1.6em;
+      font-size: 1.8em;
     }
 
     .warning-box {
@@ -50,22 +50,22 @@
       background-color: #fff3cd;
       color: #856404;
       border: 2px solid #ffeeba;
-      padding: 20px;
+      padding: 25px;
       border-radius: 10px;
-      font-size: 1.4em;
+      font-size: 1.6em;
     }
 
     .images-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 30px;
+      gap: 40px;
       justify-content: center;
       margin-top: 50px;
     }
 
     .images-row > div {
-      flex: 1 1 48%;
-      max-width: 48%;
+      flex: 1 1 100%;
+      max-width: 90vw;
     }
 
     .images-row img {
@@ -75,10 +75,10 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    @media (max-width: 768px) {
+    @media (min-width: 1200px) {
       .images-row > div {
-        flex: 1 1 100%;
-        max-width: 100%;
+        flex: 1 1 48%;
+        max-width: 48%;
       }
     }
   </style>
@@ -101,9 +101,9 @@
   {% endif %}
 
   <div class="images-row">
-    {% for image in images %}
+    {% for image in images if "phieta_test_lossmap" in image %}
       <div>
-        <img src="{{ url_for('static', filename=image) }}" alt="Loss Map">
+        <img src="{{ url_for('static', filename=image) }}" alt="Test Loss Map">
       </div>
     {% endfor %}
   </div>
