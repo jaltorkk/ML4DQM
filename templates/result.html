@@ -7,9 +7,12 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 30px;
+      margin: 0;
       background-color: #f8f9fa;
       font-size: 1.6em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     header {
@@ -20,6 +23,10 @@
       color: white;
       padding: 20px;
       border-radius: 10px;
+      width: 100%;
+      max-width: 1000px;
+      box-sizing: border-box;
+      margin-top: 20px;
     }
 
     header img {
@@ -36,51 +43,49 @@
       cursor: pointer;
     }
 
-    .help-btn:hover {
-      background-color: #0056b3;
+    main {
+      background-color: white;
+      margin-top: 30px;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 1000px;
+      box-sizing: border-box;
     }
 
-    .runs {
-      margin-top: 30px;
-      font-size: 1.8em;
+    .runs, .warnings {
+      margin-bottom: 30px;
     }
 
-    .warning-box {
-      margin-top: 30px;
+    .warnings {
       background-color: #fff3cd;
       color: #856404;
-      border: 2px solid #ffeeba;
-      padding: 25px;
+      padding: 20px;
+      border: 1px solid #ffeeba;
       border-radius: 10px;
-      font-size: 1.6em;
     }
 
-    .images-row {
+    .images {
       display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
+      gap: 30px;
       justify-content: center;
-      margin-top: 50px;
+      margin-top: 40px;
+      flex-wrap: wrap;
     }
 
-    .images-row > div {
-      flex: 1 1 100%;
-      max-width: 90vw;
-    }
-
-    .images-row img {
+    .images img {
       width: 100%;
-      height: auto;
+      max-width: 450px;
+      border: 1px solid #ccc;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    @media (min-width: 1200px) {
-      .images-row > div {
-        flex: 1 1 48%;
-        max-width: 48%;
-      }
+    .footer {
+      margin-top: 40px;
+      text-align: center;
     }
+
   </style>
 </head>
 <body>
@@ -89,24 +94,30 @@
     <button class="help-btn">Help</button>
   </header>
 
-  <div class="runs">
-    <p><strong>Training Runs:</strong> {{ training_runs | join(', ') }}</p>
-    <p><strong>Test Runs:</strong> {{ test_runs | join(', ') }}</p>
-  </div>
-
-  {% if warnings %}
-    <div class="warning-box">
-      <strong>Warning:</strong> {{ warnings }}
+  <main>
+    <div class="runs">
+      <div><strong>Training Runs:</strong> {{ training_runs | join(', ') }}</div>
+      <div><strong>Test Runs:</strong> {{ test_runs | join(', ') }}</div>
     </div>
-  {% endif %}
 
-  <div class="images-row">
-    {% for image in images %}
-      <div>
+    {% if warnings %}
+    <div class="warnings">
+      {% for warning in warnings %}
+        <div>{{ warning.replace("Warning: ", "") }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="images">
+      {% for image in images %}
         <img src="{{ url_for('static', filename=image) }}" alt="Loss Map">
-      </div>
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
+
+    <div class="footer">
+      <!-- You can add additional info here -->
+    </div>
+  </main>
 </body>
 </html>
 
