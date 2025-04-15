@@ -9,25 +9,16 @@
       font-family: Arial, sans-serif;
       margin: 0;
       background-color: #f8f9fa;
-      font-size: 1.6em;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      flex-direction: column;
+      font-size: 1.4em;
     }
 
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       background-color: #343a40;
       color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 900px;
-      box-sizing: border-box;
+      padding: 20px 40px;
     }
 
     header img {
@@ -38,73 +29,71 @@
       background-color: #007bff;
       color: white;
       padding: 12px 24px;
-      font-size: 1.4em;
+      font-size: 1.2em;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
     }
 
     .form-container {
       background-color: white;
       padding: 40px;
-      margin-top: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
       width: 100%;
-      max-width: 900px;
-      box-sizing: border-box;
     }
 
     .form-group {
-      margin-bottom: 35px;
+      margin-bottom: 30px;
     }
 
     .form-group label {
-      font-size: 1.6em;
       display: block;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    select,
+    input[type="text"] {
+      font-size: 1.2em;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 100%;
     }
 
     .input-with-dropdown {
       display: flex;
-      gap: 15px;
+      gap: 20px;
       align-items: center;
+      margin-top: 10px;
     }
 
     .input-with-dropdown input {
-      font-size: 1.6em;
-      padding: 14px;
-      flex: 2;
-      border: 1px solid #ced4da;
-      border-radius: 8px;
+      flex: 3;
     }
 
     .input-with-dropdown select {
-      font-size: 1.4em;
-      padding: 14px;
-      flex: 1;
-      border-radius: 8px;
-      border: 1px solid #ced4da;
+      flex: 2;
       background-color: #e9ecef;
-    }
-
-    select option {
-      font-size: 1em;
-    }
-
-    .form-group select,
-    .form-group input {
-      max-width: 100%;
     }
 
     .submit-btn {
       background-color: #28a745;
       color: white;
-      padding: 16px 30px;
+      padding: 16px 32px;
+      font-size: 1.4em;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 1.6em;
       display: block;
       margin: auto;
       margin-top: 30px;
@@ -121,49 +110,49 @@
     <button class="help-btn">Help</button>
   </header>
 
-  <div class="form-container">
-    <form action="/result" method="post">
-      <!-- Monitor Element -->
-      <div class="form-group">
-        <label for="monitor_element">Monitor Element:</label>
-        <select id="monitor_element" name="monitor_element">
-          <option value="met">MET</option>
-          <option value="phieta">Phi vs Eta</option>
-        </select>
-      </div>
-
-      <!-- Training Run List -->
-      <div class="form-group">
-        <label for="training_run_list">Training Run List:</label>
-        <div class="input-with-dropdown">
-          <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765" />
-          <select name="training_call">
-            <option value="">2025 Calls</option>
-            <option value="call1">Call 1</option>
-            <option value="call2">Call 2</option>
-            <option value="call3">Call 3</option>
+  <main>
+    <div class="form-container">
+      <form action="/result" method="post">
+        <!-- Monitor Element -->
+        <div class="form-group">
+          <label for="monitor_element">Monitor Element:</label>
+          <select id="monitor_element" name="monitor_element">
+            <option value="met">MET</option>
+            <option value="phieta">Phi vs Eta</option>
           </select>
         </div>
-      </div>
 
-      <!-- Test Run List -->
-      <div class="form-group">
-        <label for="test_run_list">Test Run List:</label>
-        <div class="input-with-dropdown">
-          <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767" />
-          <select name="test_call">
-            <option value="">2025 Calls</option>
-            <option value="call1">Call 1</option>
-            <option value="call2">Call 2</option>
-            <option value="call3">Call 3</option>
-          </select>
+        <!-- Training Run List -->
+        <div class="form-group">
+          <label for="training_run_list">Training Run List:</label>
+          <div class="input-with-dropdown">
+            <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765" />
+            <select name="training_call">
+              <option value="">2025 Calls</option>
+              <option value="call1">Call 1</option>
+              <option value="call2">Call 2</option>
+              <option value="call3">Call 3</option>
+            </select>
+          </div>
         </div>
-      </div>
 
-      <button type="submit" class="submit-btn">Submit</button>
-    </form>
-  </div>
+        <!-- Test Run List -->
+        <div class="form-group">
+          <label for="test_run_list">Test Run List:</label>
+          <div class="input-with-dropdown">
+            <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767" />
+            <select name="test_call">
+              <option value="">2025 Calls</option>
+              <option value="call1">Call 1</option>
+              <option value="call2">Call 2</option>
+              <option value="call3">Call 3</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    </div>
+  </main>
 </body>
 </html>
-
-
