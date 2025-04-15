@@ -124,12 +124,44 @@
         <div class="form-group">
           <label for="monitor_element">Monitor Element:</label>
           <select id="monitor_element" name="monitor_element">
-            <option value="met">MET</option>
             <option value="phieta">Phi vs Eta</option>
+            <option value="hadronocc">Hadron Occupancy</option>
+            <option value="met">MET</option>
+            
           </select>
         </div>
 
         <!-- Training Run List -->
         <div class="form-group">
-          <label for="training_run_list">Training Run List:</label
+          <label for="training_run_list">Training Run List:</label>
+          <div class="input-with-dropdown">
+            <input type="text" id="training_run_list" name="training_run_list" placeholder="e.g. 368765" />
+            <select name="training_call">
+              <option value="">2025 Calls</option>
+              <option value="call1">Call 1</option>
+              <option value="call2">Call 2</option>
+              <option value="call3">Call 3</option>
+            </select>
+          </div>
+        </div>
 
+        <!-- Test Run List -->
+        <div class="form-group">
+          <label for="test_run_list">Test Run List:</label>
+          <div class="input-with-dropdown">
+            <input type="text" id="test_run_list" name="test_run_list" placeholder="e.g. 368767" />
+            <select name="test_call">
+              <option value="">2025 Calls</option>
+              <option value="call1">Call 1</option>
+              <option value="call2">Call 2</option>
+              <option value="call3">Call 3</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
